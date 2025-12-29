@@ -15,9 +15,10 @@
             font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             margin: 0; padding: 0;
             height: 100vh; height: 100dvh; 
-            overflow: hidden; 
+            overflow: hidden; /* PC에서는 스크롤 없음 (내부 스크롤) */
         }
 
+        /* 입력 필드 테마 */
         .x-input-group {
             position: relative;
             border: 1px solid #cfd9de;
@@ -56,6 +57,7 @@
             top: 6px; font-size: 13px; color: #1d9bf0;
         }
 
+        /* Grok 버튼 */
         .grok-btn {
             display: inline-flex; align-items: center; justify-content: center;
             width: 100%; height: 40px; border-radius: 9999px;
@@ -71,9 +73,10 @@
             .grok-btn:hover { background-color: #f7f9f9; }
         }
 
+        /* 푸터 스타일 */
         .footer-container {
             display: flex; flex-wrap: wrap; justify-content: center;
-            gap: 12px 0; padding: 16px; font-size: 13px; color: #536471; line-height: 1.3;
+            gap: 12px 0; padding: 12px 16px; font-size: 13px; color: #536471; line-height: 1.3;
         }
         @media (prefers-color-scheme: dark) {
             .footer-container { color: #71767b; }
@@ -82,7 +85,7 @@
         .footer-link:hover { text-decoration: underline; cursor: pointer; }
         .footer-item:not(:last-child)::after {
             content: ''; display: block; width: 1px; height: 10px;
-            background-color: #536471; margin: 0 6px; opacity: 0.5;
+            background-color: #536471; margin: 0; position: absolute; right: 0; top: 50%; transform: translateY(-50%); opacity: 0.5;
         }
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -95,21 +98,27 @@
 
 <body class="bg-white dark:bg-black text-[#0f1419] dark:text-[#e7e9ea]">
 
+    <!-- 로딩 화면 -->
     <div id="loading-screen" class="fixed inset-0 z-[100] bg-white dark:bg-black flex items-center justify-center">
         <svg viewBox="0 0 24 24" aria-hidden="true" class="w-[72px] h-[72px] fill-black dark:fill-[#e7e9ea]">
             <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
         </svg>
     </div>
 
-    <!-- PC View -->
-    <div id="pc-view" class="hidden md:flex h-screen w-full">
+    <!-- ========================================= -->
+    <!-- PC 레이아웃 (md 이상) -->
+    <!-- ========================================= -->
+    <div id="pc-view" class="hidden md:flex h-screen w-full relative">
+        
+        <!-- 왼쪽: 로고 -->
         <div class="w-1/2 h-full flex justify-center items-center relative">
             <svg viewBox="0 0 24 24" aria-hidden="true" class="w-[300px] lg:w-[380px] fill-black dark:fill-[#e7e9ea]">
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
             </svg>
         </div>
 
-        <div class="w-1/2 h-full relative flex flex-col justify-center pl-12 lg:pl-20">
+        <!-- 오른쪽: 로그인 폼 -->
+        <div class="w-1/2 h-full flex flex-col justify-center pl-12 lg:pl-20 pb-20"> <!-- pb-20으로 푸터 공간 확보 -->
             <div class="max-w-[600px] w-full">
                 <div class="mb-12">
                     <h1 class="text-[64px] font-extrabold mb-12 tracking-wide leading-tight break-keep">지금 일어나고 있는 일</h1>
@@ -125,11 +134,11 @@
                         <i class="fa-brands fa-apple text-[20px]"></i> <span class="text-sm">Apple에서 가입하기</span>
                     </button>
 
-                    <!-- Divider Fixed -->
-                    <div class="flex items-center my-1 w-full justify-between">
-                        <div class="h-px bg-[#cfd9de] dark:bg-[#2f3336] w-[42%]"></div>
-                        <span class="px-2 text-[15px] pb-1">또는</span>
-                        <div class="h-px bg-[#cfd9de] dark:bg-[#2f3336] w-[42%]"></div>
+                    <!-- 구분선 수정 (Flex-1 사용으로 꽉 채움) -->
+                    <div class="flex items-center my-1 w-full gap-2">
+                        <div class="h-px bg-[#cfd9de] dark:bg-[#2f3336] flex-1"></div>
+                        <span class="text-[15px] pb-1 shrink-0">또는</span>
+                        <div class="h-px bg-[#cfd9de] dark:bg-[#2f3336] flex-1"></div>
                     </div>
 
                     <a href="https://x.com/i/flow/signup" target="_blank" class="bg-[#1d9bf0] hover:bg-[#1a8cd8] text-white transition rounded-full h-10 px-4 font-bold text-[15px] flex items-center justify-center decoration-0">계정 만들기</a>
@@ -146,9 +155,11 @@
                 </div>
             </div>
         </div>
-        
+
+        <!-- PC 푸터 (화면 전체 하단 고정) -->
+        <!-- absolute bottom-0 w-full: 화면 전체 너비를 차지하며 하단에 붙음 -->
         <div class="absolute bottom-0 w-full py-3 px-4 z-10 bg-white dark:bg-black">
-            <div class="flex flex-wrap justify-center gap-y-1 text-[13px] text-[#536471] dark:text-[#71767b]">
+            <div class="footer-container">
                 <span class="footer-item footer-link">소개</span>
                 <span class="footer-item footer-link">X 앱 다운로드하기</span>
                 <span class="footer-item footer-link">고객센터</span>
@@ -167,14 +178,17 @@
                 <span class="footer-item footer-link">개발자</span>
                 <span class="footer-item footer-link">디렉터리</span>
                 <span class="footer-item footer-link">설정</span>
-                <span class="footer-item">© 2025 X Corp.</span>
+                <span class="footer-item" style="padding-right:0;">© 2025 X Corp.</span>
             </div>
         </div>
     </div>
 
-    <!-- Mobile View -->
+    <!-- ========================================= -->
+    <!-- 모바일 레이아웃 (md 미만) -->
+    <!-- ========================================= -->
     <div id="mobile-view" class="flex md:hidden flex-col h-dvh w-full overflow-y-auto no-scrollbar">
         <div class="flex-grow px-8 py-10 flex flex-col items-center">
+            
             <div class="w-full mb-10 flex justify-start">
                  <svg viewBox="0 0 24 24" aria-hidden="true" class="w-10 h-10 fill-black dark:fill-[#e7e9ea]">
                     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
@@ -195,11 +209,11 @@
                     <i class="fa-brands fa-apple text-[20px]"></i> <span class="text-sm">Apple에서 가입하기</span>
                 </button>
 
-                <!-- Divider Fixed -->
-                <div class="flex items-center my-1 w-full justify-between">
-                    <div class="h-px bg-[#cfd9de] dark:bg-[#2f3336] w-[42%]"></div>
-                    <span class="px-2 text-[15px] pb-1">또는</span>
-                    <div class="h-px bg-[#cfd9de] dark:bg-[#2f3336] w-[42%]"></div>
+                <!-- 구분선 수정 -->
+                <div class="flex items-center my-1 w-full gap-2">
+                    <div class="h-px bg-[#cfd9de] dark:bg-[#2f3336] flex-1"></div>
+                    <span class="text-[15px] pb-1 shrink-0">또는</span>
+                    <div class="h-px bg-[#cfd9de] dark:bg-[#2f3336] flex-1"></div>
                 </div>
 
                 <a href="https://x.com/i/flow/signup" target="_blank" class="bg-[#1d9bf0] hover:bg-[#1a8cd8] text-white transition rounded-full h-10 px-4 font-bold text-[15px] flex items-center justify-center decoration-0">계정 만들기</a>
@@ -216,8 +230,9 @@
             </div>
         </div>
 
+        <!-- 모바일 푸터 (스크롤 맨 하단) -->
         <div class="w-full py-4 px-6 pb-8 bg-transparent">
-            <div class="flex flex-wrap justify-center gap-y-1 text-[13px] text-[#536471] dark:text-[#71767b]">
+            <div class="footer-container">
                 <span class="footer-item footer-link">소개</span>
                 <span class="footer-item footer-link">X 앱 다운로드하기</span>
                 <span class="footer-item footer-link">고객센터</span>
@@ -236,12 +251,12 @@
                 <span class="footer-item footer-link">개발자</span>
                 <span class="footer-item footer-link">디렉터리</span>
                 <span class="footer-item footer-link">설정</span>
-                <span class="footer-item">© 2025 X Corp.</span>
+                <span class="footer-item" style="padding-right:0;">© 2025 X Corp.</span>
             </div>
         </div>
     </div>
 
-    <!-- Login Modal -->
+    <!-- Login Modal (공통) -->
     <div id="login-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-[rgba(0,0,0,0.4)] dark:bg-[rgba(91,112,131,0.4)] backdrop-blur-sm p-0 md:p-4">
         <div class="relative bg-white dark:bg-black w-full h-full md:h-auto md:max-w-[600px] md:min-h-[400px] md:rounded-2xl flex flex-col shadow-2xl overflow-hidden md:max-h-[90vh] transition-colors duration-300">
             <div class="h-[53px] flex items-center px-4 shrink-0 w-full relative">
@@ -264,10 +279,10 @@
                     <button class="bg-white text-black border border-[#cfd9de] dark:border-transparent hover:bg-[#e6e6e6] transition rounded-full h-10 mb-4 px-4 flex items-center justify-center gap-2 font-bold text-[14px] w-full">
                         <i class="fa-brands fa-apple text-[20px]"></i> <span class="text-sm">Apple로 로그인</span>
                     </button>
-                    <div class="flex items-center my-4 justify-between w-full">
-                        <div class="h-px bg-[#cfd9de] dark:bg-[#2f3336] w-[42%]"></div>
-                        <span class="px-2 text-sm text-[#0f1419] dark:text-[#e7e9ea]">또는</span>
-                        <div class="h-px bg-[#cfd9de] dark:bg-[#2f3336] w-[42%]"></div>
+                    <div class="flex items-center my-4 w-full gap-2">
+                        <div class="h-px bg-[#cfd9de] dark:bg-[#2f3336] flex-1"></div>
+                        <span class="text-sm text-[#0f1419] dark:text-[#e7e9ea] shrink-0">또는</span>
+                        <div class="h-px bg-[#cfd9de] dark:bg-[#2f3336] flex-1"></div>
                     </div>
                     <div class="x-input-group mb-6">
                         <input type="text" id="username-input" class="x-input-field" placeholder=" " autocomplete="off">
