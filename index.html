@@ -2,19 +2,27 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- 1. 탭 타이틀 및 파비콘 설정 -->
+    <title>X. 무슨 일이 일어나고 있나요? / X</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z'/%3E%3C/svg%3E">
+
+    <!-- 2. 링크 미리보기 (Open Graph) 설정 -->
+    <meta property="og:title" content="X. 무슨 일이 일어나고 있나요? / X">
+    <meta property="og:description" content="지금 가입하세요.">
+    <meta property="og:image" content="https://abs.twimg.com/responsive-web/client-web/icon-ios.b1fc7275.png"> <!-- X 공식 아이콘 링크 -->
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        /* Tailwind Config for Dark Mode */
-        /* 기본적으로 시스템 설정을 따릅니다 */
-        
+        /* 시스템 테마 감지 및 기본 설정 */
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            overflow: hidden;
+            overflow-x: hidden;
             transition: background-color 0.3s, color 0.3s;
         }
 
@@ -31,16 +39,13 @@
         /* Input Styling - Theme Aware */
         .x-input-group {
             position: relative;
-            border: 1px solid #cfd9de; /* Light mode border */
+            border: 1px solid #cfd9de; /* Light mode */
             border-radius: 4px;
             background: transparent;
             transition: all 0.2s;
         }
-        /* Dark Mode Override via Media Query for specific custom class */
         @media (prefers-color-scheme: dark) {
-            .x-input-group {
-                border-color: #333639;
-            }
+            .x-input-group { border-color: #333639; }
         }
 
         .x-input-group:focus-within {
@@ -52,7 +57,7 @@
             position: absolute;
             left: 8px;
             top: 16px;
-            color: #536471; /* Light mode text */
+            color: #536471;
             font-size: 17px;
             transition: all 0.2s;
             pointer-events: none;
@@ -67,7 +72,7 @@
             padding: 26px 8px 8px 8px;
             background: transparent;
             border: none;
-            color: #0f1419; /* Light mode text */
+            color: #0f1419;
             font-size: 17px;
             outline: none;
         }
@@ -81,11 +86,8 @@
             font-size: 13px;
             color: #1d9bf0;
         }
-        .x-input-field:not(:focus):not(:placeholder-shown) + .x-input-label {
-            /* Keep gray when not focused but has value */
-        }
 
-        /* Grok Button Styling - Theme Aware */
+        /* Grok Button Styling */
         .grok-btn {
             display: inline-flex;
             align-items: center;
@@ -112,7 +114,6 @@
                 color: #1d9bf0;
             }
         }
-        /* Light Mode Hover */
         @media (prefers-color-scheme: light) {
             .grok-btn:hover {
                 background-color: #f7f9f9;
@@ -131,7 +132,7 @@
             justify-content: center;
             gap: 0;
             font-size: 13px;
-            color: #536471; /* Light mode gray */
+            color: #536471;
             padding: 12px 16px;
         }
         @media (prefers-color-scheme: dark) {
@@ -151,7 +152,7 @@
         .footer-link:hover {
             text-decoration: underline;
         }
-        /* Straight Line Separator */
+        
         .footer-item:not(:last-child)::after {
             content: '';
             display: block;
@@ -166,125 +167,121 @@
         }
     </style>
 </head>
-<!-- Body adapts to light (default/system) or dark (system) -->
-<!-- Tailwind's 'dark:' classes trigger when prefers-color-scheme is dark -->
-<body class="bg-white dark:bg-black text-[#0f1419] dark:text-[#e7e9ea] h-screen w-full flex flex-col">
 
-    <!-- Loading Splash Screen (Adapts to Theme) -->
+<!-- Body (Flex Column on Mobile, Row on Desktop) -->
+<body class="bg-white dark:bg-black text-[#0f1419] dark:text-[#e7e9ea] h-screen w-full flex flex-col md:flex-row overflow-hidden">
+
+    <!-- Loading Splash Screen -->
     <div id="loading-screen" class="fixed inset-0 z-[100] bg-white dark:bg-black flex items-center justify-center">
-        <!-- Logo fills black in light mode, white in dark mode -->
         <svg viewBox="0 0 24 24" aria-hidden="true" class="w-[72px] h-[72px] fill-black dark:fill-[#e7e9ea]">
             <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
         </svg>
     </div>
 
-    <!-- Main Content: Row -->
-    <div class="flex-grow flex w-full h-full relative">
+    <!-- 1. LEFT COLUMN: Large Logo (Desktop Only) -->
+    <!-- hidden on mobile, flex on md+ screens -->
+    <div class="hidden md:flex md:w-1/2 h-full justify-center items-center bg-white dark:bg-black relative transition-colors duration-300">
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="w-[300px] lg:w-[380px] fill-black dark:fill-[#e7e9ea] transition-colors duration-300">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+        </svg>
+    </div>
+
+    <!-- 2. RIGHT COLUMN: Content (Full width on Mobile) -->
+    <div class="w-full md:w-1/2 h-full bg-white dark:bg-black flex flex-col relative overflow-y-auto no-scrollbar transition-colors duration-300">
         
-        <!-- Left: Logo Area (Desktop) -->
-        <div class="hidden md:flex w-1/2 h-full justify-center items-center bg-white dark:bg-black relative transition-colors duration-300">
-            <!-- Official X Logo SVG -->
-            <svg viewBox="0 0 24 24" aria-hidden="true" class="w-[300px] lg:w-[380px] fill-black dark:fill-[#e7e9ea] transition-colors duration-300">
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
-            </svg>
+        <!-- Inner Container for Center Alignment -->
+        <div class="flex-grow flex flex-col justify-center px-8 md:px-12 lg:px-20 py-10">
+            
+            <!-- Mobile Logo (Visible ONLY on Mobile) -->
+            <div class="md:hidden mb-12 flex justify-start">
+                 <svg viewBox="0 0 24 24" aria-hidden="true" class="w-10 h-10 fill-black dark:fill-[#e7e9ea]">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+                </svg>
+            </div>
+
+            <!-- Headings -->
+            <div class="mb-10 md:mb-12">
+                <!-- Large text scales down on mobile -->
+                <h1 class="text-[40px] md:text-[64px] font-extrabold mb-8 md:mb-10 tracking-wide text-[#0f1419] dark:text-[#e7e9ea] leading-tight break-keep">지금 일어나고 있는 일</h1>
+                <h2 class="text-[23px] md:text-[31px] font-bold mb-8 text-[#0f1419] dark:text-[#e7e9ea]">지금 가입하세요.</h2>
+            </div>
+
+            <!-- Auth Buttons -->
+            <div class="w-full max-w-[300px] flex flex-col gap-3">
+                
+                <!-- Google -->
+                <button class="bg-white text-[#0f1419] border border-[#cfd9de] dark:border-transparent hover:bg-[#f7f9f9] dark:hover:bg-[#e6e6e6] transition rounded-full h-10 px-4 flex items-center justify-center gap-2 font-medium text-[15px]">
+                    <i class="fa-brands fa-google text-[18px]"></i>
+                    <span class="text-sm">Google 계정으로 가입</span>
+                </button>
+                
+                <!-- Apple -->
+                <button class="bg-white text-[#0f1419] border border-[#cfd9de] dark:border-transparent hover:bg-[#f7f9f9] dark:hover:bg-[#e6e6e6] transition rounded-full h-10 px-4 flex items-center justify-center gap-2 font-bold text-[15px]">
+                    <i class="fa-brands fa-apple text-[20px]"></i>
+                    <span class="text-sm">Apple에서 가입하기</span>
+                </button>
+
+                <!-- Divider -->
+                <div class="flex items-center my-1">
+                    <div class="h-px bg-[#cfd9de] dark:bg-[#2f3336] flex-1"></div>
+                    <span class="px-2 text-[15px] text-[#0f1419] dark:text-[#e7e9ea] pb-1">또는</span>
+                    <div class="h-px bg-[#cfd9de] dark:bg-[#2f3336] flex-1"></div>
+                </div>
+
+                <!-- Create Account -->
+                <a href="https://x.com/i/flow/signup" target="_blank" class="bg-[#1d9bf0] hover:bg-[#1a8cd8] text-white transition rounded-full h-10 px-4 font-bold text-[15px] flex items-center justify-center decoration-0">
+                    계정 만들기
+                </a>
+
+                <p class="text-[11px] text-[#536471] dark:text-[#71767b] mt-1 leading-normal">
+                    가입하시거나 로그인하면 <span class="text-[#1d9bf0] cursor-pointer hover:underline">쿠키 사용</span>을 포함해 <span class="text-[#1d9bf0] cursor-pointer hover:underline">이용약관</span> 및 <span class="text-[#1d9bf0] cursor-pointer hover:underline">개인정보 처리방침</span>에 동의하게 됩니다.
+                </p>
+
+                <!-- Login & Grok -->
+                <div class="mt-10 md:mt-14">
+                    <p class="font-bold text-[17px] mb-4 text-[#0f1419] dark:text-[#e7e9ea]">이미 계정이 있으신가요?</p>
+                    <button id="signin-trigger-btn" class="w-full border border-[#cfd9de] dark:border-[#536471] text-[#1d9bf0] hover:bg-[#e8f5fd] dark:hover:bg-[rgba(29,155,240,0.1)] transition rounded-full h-10 font-bold text-[15px]">
+                        로그인
+                    </button>
+                    
+                    <a href="https://grok.com/" target="_blank" class="grok-btn group">
+                        <span class="mr-2 font-bold">/</span> 
+                        <span>Grok 살펴보기</span>
+                    </a>
+                </div>
+            </div>
         </div>
 
-        <!-- Right: Content Area -->
-        <div class="w-full md:w-1/2 h-full bg-white dark:bg-black flex flex-col justify-center px-4 md:px-12 lg:px-20 relative overflow-y-auto no-scrollbar transition-colors duration-300">
-            
-            <div class="flex flex-col justify-center min-h-full py-10">
-                
-                <!-- Mobile Logo -->
-                <div class="md:hidden mb-12">
-                     <svg viewBox="0 0 24 24" aria-hidden="true" class="w-10 h-10 fill-black dark:fill-[#e7e9ea]">
-                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
-                    </svg>
-                </div>
-
-                <!-- Text Content -->
-                <div class="mb-12">
-                    <h1 class="text-[40px] md:text-[64px] font-extrabold mb-10 tracking-wide text-[#0f1419] dark:text-[#e7e9ea] leading-tight break-keep" style="font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">지금 일어나고 있는 일</h1>
-                    <h2 class="text-[23px] md:text-[31px] font-bold mb-8 text-[#0f1419] dark:text-[#e7e9ea]">지금 가입하세요.</h2>
-                </div>
-
-                <!-- Auth Buttons Container -->
-                <div class="w-full max-w-[300px] flex flex-col gap-3">
-                    
-                    <!-- Google Button -->
-                    <!-- Light Mode: White with gray border. Dark Mode: White with no border -->
-                    <button class="bg-white text-[#0f1419] border border-[#cfd9de] dark:border-transparent hover:bg-[#f7f9f9] dark:hover:bg-[#e6e6e6] transition rounded-full h-10 px-4 flex items-center justify-center gap-2 font-medium text-[15px]">
-                        <i class="fa-brands fa-google text-[18px]"></i>
-                        <span class="text-sm">Google 계정으로 가입</span>
-                    </button>
-                    
-                    <!-- Apple Button -->
-                    <button class="bg-white text-[#0f1419] border border-[#cfd9de] dark:border-transparent hover:bg-[#f7f9f9] dark:hover:bg-[#e6e6e6] transition rounded-full h-10 px-4 flex items-center justify-center gap-2 font-bold text-[15px]">
-                        <i class="fa-brands fa-apple text-[20px]"></i>
-                        <span class="text-sm">Apple에서 가입하기</span>
-                    </button>
-
-                    <!-- Divider -->
-                    <div class="flex items-center my-1">
-                        <div class="h-px bg-[#cfd9de] dark:bg-[#2f3336] flex-1"></div>
-                        <span class="px-2 text-[15px] text-[#0f1419] dark:text-[#e7e9ea] pb-1">또는</span>
-                        <div class="h-px bg-[#cfd9de] dark:bg-[#2f3336] flex-1"></div>
-                    </div>
-
-                    <!-- Create Account Link -->
-                    <a href="https://x.com/i/flow/signup" target="_blank" class="bg-[#1d9bf0] hover:bg-[#1a8cd8] text-white transition rounded-full h-10 px-4 font-bold text-[15px] flex items-center justify-center decoration-0">
-                        계정 만들기
-                    </a>
-
-                    <p class="text-[11px] text-[#536471] dark:text-[#71767b] mt-1 leading-normal">
-                        가입하시거나 로그인하면 <span class="text-[#1d9bf0] cursor-pointer hover:underline">쿠키 사용</span>을 포함해 <span class="text-[#1d9bf0] cursor-pointer hover:underline">이용약관</span> 및 <span class="text-[#1d9bf0] cursor-pointer hover:underline">개인정보 처리방침</span>에 동의하게 됩니다.
-                    </p>
-
-                    <!-- Login Section -->
-                    <div class="mt-14">
-                        <p class="font-bold text-[17px] mb-4 text-[#0f1419] dark:text-[#e7e9ea]">이미 계정이 있으신가요?</p>
-                        <button id="signin-trigger-btn" class="w-full border border-[#cfd9de] dark:border-[#536471] text-[#1d9bf0] hover:bg-[#e8f5fd] dark:hover:bg-[rgba(29,155,240,0.1)] transition rounded-full h-10 font-bold text-[15px]">
-                            로그인
-                        </button>
-                        
-                        <!-- Grok Button -->
-                        <a href="https://grok.com/" target="_blank" class="grok-btn group">
-                            <span class="mr-2 font-bold">/</span> 
-                            <span>Grok 살펴보기</span>
-                        </a>
-                    </div>
-                </div>
+        <!-- Footer (Within Scrollable Area on Mobile, Absolute on Desktop) -->
+        <div class="w-full bg-white dark:bg-black py-4 transition-colors duration-300 md:absolute md:bottom-0 md:left-0 md:z-10">
+            <div class="footer-container">
+                <div class="footer-item"><span class="footer-link">소개</span></div>
+                <div class="footer-item"><span class="footer-link">X 앱 다운로드하기</span></div>
+                <div class="footer-item"><span class="footer-link">고객센터</span></div>
+                <div class="footer-item"><span class="footer-link">이용약관</span></div>
+                <div class="footer-item"><span class="footer-link">개인정보 처리방침</span></div>
+                <div class="footer-item"><span class="footer-link">쿠키 정책</span></div>
+                <div class="footer-item"><span class="footer-link">접근성</span></div>
+                <div class="footer-item"><span class="footer-link">광고 정보</span></div>
+                <div class="footer-item"><span class="footer-link">블로그</span></div>
+                <div class="footer-item"><span class="footer-link">상태</span></div>
+                <div class="footer-item"><span class="footer-link">채용</span></div>
+                <div class="footer-item"><span class="footer-link">브랜드 리소스</span></div>
+                <div class="footer-item"><span class="footer-link">광고</span></div>
+                <div class="footer-item"><span class="footer-link">마케팅</span></div>
+                <div class="footer-item"><span class="footer-link">X 비즈니스</span></div>
+                <div class="footer-item"><span class="footer-link">개발자</span></div>
+                <div class="footer-item"><span class="footer-link">디렉터리</span></div>
+                <div class="footer-item"><span class="footer-link">설정</span></div>
+                <div class="footer-item" style="border:none;"><span class="footer-link" style="padding-right:0;">© 2025 X Corp.</span></div>
             </div>
         </div>
     </div>
 
-    <!-- Footer Area (Fixed Bottom) -->
-    <div class="absolute bottom-0 w-full bg-white dark:bg-black z-10 py-3 transition-colors duration-300">
-        <div class="footer-container">
-            <div class="footer-item"><span class="footer-link">소개</span></div>
-            <div class="footer-item"><span class="footer-link">X 앱 다운로드하기</span></div>
-            <div class="footer-item"><span class="footer-link">고객센터</span></div>
-            <div class="footer-item"><span class="footer-link">이용약관</span></div>
-            <div class="footer-item"><span class="footer-link">개인정보 처리방침</span></div>
-            <div class="footer-item"><span class="footer-link">쿠키 정책</span></div>
-            <div class="footer-item"><span class="footer-link">접근성</span></div>
-            <div class="footer-item"><span class="footer-link">광고 정보</span></div>
-            <div class="footer-item"><span class="footer-link">블로그</span></div>
-            <div class="footer-item"><span class="footer-link">상태</span></div>
-            <div class="footer-item"><span class="footer-link">채용</span></div>
-            <div class="footer-item"><span class="footer-link">브랜드 리소스</span></div>
-            <div class="footer-item"><span class="footer-link">광고</span></div>
-            <div class="footer-item"><span class="footer-link">마케팅</span></div>
-            <div class="footer-item"><span class="footer-link">X 비즈니스</span></div>
-            <div class="footer-item"><span class="footer-link">개발자</span></div>
-            <div class="footer-item"><span class="footer-link">디렉터리</span></div>
-            <div class="footer-item"><span class="footer-link">설정</span></div>
-            <div class="footer-item" style="border:none;"><span class="footer-link" style="padding-right:0;">© 2025 X Corp.</span></div>
-        </div>
-    </div>
-
     <!-- Login Modal -->
-    <div id="login-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-[rgba(0,0,0,0.4)] dark:bg-[rgba(91,112,131,0.4)] backdrop-blur-sm">
-        <div class="relative bg-white dark:bg-black w-full h-full md:h-auto md:max-w-[600px] md:min-h-[400px] md:rounded-2xl flex flex-col shadow-2xl overflow-hidden md:max-h-[90vh] transition-colors duration-300">
+    <div id="login-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-[rgba(0,0,0,0.4)] dark:bg-[rgba(91,112,131,0.4)] backdrop-blur-sm p-0 md:p-4">
+        <!-- Modal Container: Fullscreen on Mobile, Centered on Desktop -->
+        <div class="relative bg-white dark:bg-black w-full h-full md:h-auto md:max-w-[600px] md:min-h-[400px] md:rounded-2xl flex flex-col shadow-2xl overflow-hidden transition-colors duration-300">
             
             <!-- Header -->
             <div class="h-[53px] flex items-center px-4 shrink-0 w-full relative">
@@ -292,7 +289,6 @@
                     <span class="text-xl text-[#0f1419] dark:text-[#eff3f4] leading-none">&times;</span>
                 </button>
                 <div class="w-full flex justify-center">
-                    <!-- Modal Logo (SVG) -->
                     <svg viewBox="0 0 24 24" aria-hidden="true" class="w-8 h-8 fill-black dark:fill-[#e7e9ea]">
                         <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
                     </svg>
@@ -403,7 +399,6 @@
             nextBtn.disabled = true;
             nextBtn.classList.add('bg-[#787a7a]', 'text-[#16181c]');
             nextBtn.classList.remove('bg-[#eff3f4]', 'text-[#0f1419]');
-            // Light mode disable style override
             if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
                  nextBtn.classList.add('bg-opacity-50');
             }
@@ -420,13 +415,9 @@
 
             if(e.target.value.trim().length > 0) {
                 nextBtn.disabled = false;
-                // Remove disabled styles
                 nextBtn.classList.remove('bg-[#787a7a]', 'text-[#16181c]', 'bg-opacity-50');
-                // Add active styles (handled by class list in HTML + default styling)
-                // We rely on the base class styles, just removing overrides
             } else {
                 nextBtn.disabled = true;
-                // Re-add disabled styles
                 nextBtn.classList.add('bg-[#787a7a]', 'text-[#16181c]');
                 if (isLight) nextBtn.classList.add('bg-opacity-50');
             }
@@ -467,7 +458,6 @@
                 loginFinalBtn.innerText = originalText;
                 modal.classList.add('hidden');
                 
-                // Change UI to simulated logged-in state
                 signinBtn.innerHTML = `<span class="flex items-center justify-center gap-2">✅ ${usernameInput.value}</span>`;
                 signinBtn.classList.remove('text-[#1d9bf0]', 'border-[#536471]');
                 signinBtn.classList.add('text-green-500', 'border-green-500', 'bg-[rgba(0,255,0,0.1)]');
