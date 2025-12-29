@@ -1,0 +1,2 @@
+# linktrick
+x scam
