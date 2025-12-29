@@ -3,23 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
     <title>X. 무슨 일이 일어나고 있나요? / X</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z'/%3E%3C/svg%3E">
-
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+        /* 1. 기본 폰트 및 스크롤 설정 */
         body {
             font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            overflow-x: hidden;
-            transition: background-color 0.3s, color 0.3s;
+            overflow: hidden; /* 전체 페이지 스크롤 방지 (컨테이너 내부 스크롤 사용) */
         }
 
-        #loading-screen { transition: opacity 0.5s ease-out, visibility 0.5s; }
-        .fade-out { opacity: 0; visibility: hidden; pointer-events: none; }
+        /* 2. 모바일 높이 대응 (주소창 이슈 해결) */
+        .h-dvh {
+            height: 100vh; /* Fallback */
+            height: 100dvh; /* Dynamic Viewport Height */
+        }
 
+        /* 3. 입력 필드 스타일 (테마 대응) */
         .x-input-group {
             position: relative;
             border: 1px solid #cfd9de;
@@ -27,124 +31,176 @@
             background: transparent;
             transition: all 0.2s;
         }
-        @media (prefers-color-scheme: dark) { .x-input-group { border-color: #333639; } }
-        .x-input-group:focus-within { border-color: #1d9bf0 !important; box-shadow: 0 0 0 1px #1d9bf0; }
+        @media (prefers-color-scheme: dark) {
+            .x-input-group { border-color: #333639; }
+        }
+        .x-input-group:focus-within {
+            border-color: #1d9bf0 !important;
+            box-shadow: 0 0 0 1px #1d9bf0;
+        }
 
         .x-input-label {
-            position: absolute; left: 8px; top: 16px; color: #536471; font-size: 17px;
-            transition: all 0.2s; pointer-events: none; transform-origin: left top;
-        }
-        @media (prefers-color-scheme: dark) { .x-input-label { color: #71767b; } }
-
-        .x-input-field {
-            width: 100%; padding: 26px 8px 8px 8px; background: transparent; border: none;
-            color: #0f1419; font-size: 17px; outline: none;
-        }
-        @media (prefers-color-scheme: dark) { .x-input-field { color: #fff; } }
-        .x-input-field:focus + .x-input-label, .x-input-field:not(:placeholder-shown) + .x-input-label { top: 6px; font-size: 13px; color: #1d9bf0; }
-
-        .grok-btn {
-            display: inline-flex; align-items: center; justify-content: center; width: 100%; height: 40px;
-            border-radius: 9999px; background-color: transparent; border: 1px solid #cfd9de;
-            color: #0f1419; font-weight: bold; font-size: 15px; transition: all 0.2s; margin-top: 12px;
+            position: absolute;
+            left: 8px;
+            top: 16px;
+            color: #536471;
+            font-size: 17px;
+            transition: all 0.2s;
+            pointer-events: none;
+            transform-origin: left top;
         }
         @media (prefers-color-scheme: dark) {
-            .grok-btn { border-color: #536471; color: #e7e9ea; }
-            .grok-btn:hover { background-color: rgba(29, 155, 240, 0.1); border-color: #1d9bf0; color: #1d9bf0; }
+            .x-input-label { color: #71767b; }
+        }
+
+        .x-input-field {
+            width: 100%;
+            padding: 26px 8px 8px 8px;
+            background: transparent;
+            border: none;
+            color: #0f1419;
+            font-size: 17px;
+            outline: none;
+        }
+        @media (prefers-color-scheme: dark) {
+            .x-input-field { color: #fff; }
+        }
+
+        .x-input-field:focus + .x-input-label,
+        .x-input-field:not(:placeholder-shown) + .x-input-label {
+            top: 6px;
+            font-size: 13px;
+            color: #1d9bf0;
+        }
+
+        /* 4. Grok 버튼 스타일 */
+        .grok-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 40px;
+            border-radius: 9999px;
+            background-color: transparent;
+            border: 1px solid #cfd9de;
+            color: #0f1419;
+            font-weight: bold;
+            font-size: 15px;
+            transition: all 0.2s;
+            margin-top: 12px;
+        }
+        @media (prefers-color-scheme: dark) {
+            .grok-btn {
+                border-color: #536471;
+                color: #e7e9ea;
+            }
+            .grok-btn:hover {
+                background-color: rgba(29, 155, 240, 0.1);
+                border-color: #1d9bf0;
+                color: #1d9bf0;
+            }
         }
         @media (prefers-color-scheme: light) {
-            .grok-btn:hover { background-color: #f7f9f9; border-color: #1d1f23; }
+            .grok-btn:hover {
+                background-color: #f7f9f9;
+            }
         }
 
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-        .footer-container {
-            display: flex; flex-wrap: wrap; justify-content: center; gap: 0; font-size: 13px; color: #536471; padding: 12px 16px;
-        }
-        @media (prefers-color-scheme: dark) { .footer-container { color: #71767b; } }
-        .footer-item { display: flex; align-items: center; white-space: nowrap; line-height: 1.5; }
-        .footer-link { cursor: pointer; padding: 0 8px; }
-        .footer-link:hover { text-decoration: underline; }
+        /* 5. 푸터 구분선 스타일 */
         .footer-item:not(:last-child)::after {
-            content: ''; display: block; width: 1px; height: 10px; background-color: #536471; margin: 0 4px; opacity: 0.5;
+            content: '';
+            display: block;
+            width: 1px;
+            height: 10px;
+            background-color: #536471;
+            margin: 0 6px;
+            opacity: 0.5;
         }
-        @media (prefers-color-scheme: dark) { .footer-item:not(:last-child)::after { background-color: #71767b; } }
+        
+        /* 6. 로딩 화면 */
+        #loading-screen { transition: opacity 0.5s ease-out, visibility 0.5s; }
+        .fade-out { opacity: 0; visibility: hidden; pointer-events: none; }
     </style>
 </head>
 
-<body class="bg-white dark:bg-black text-[#0f1419] dark:text-[#e7e9ea] h-screen w-full flex flex-col overflow-hidden">
+<!-- Body: 시스템 테마 자동 감지 (Light/Dark) -->
+<body class="bg-white dark:bg-black text-[#0f1419] dark:text-[#e7e9ea]">
 
-    <!-- Loading Screen -->
+    <!-- 0. 오프닝 로딩 화면 -->
     <div id="loading-screen" class="fixed inset-0 z-[100] bg-white dark:bg-black flex items-center justify-center">
         <svg viewBox="0 0 24 24" aria-hidden="true" class="w-[72px] h-[72px] fill-black dark:fill-[#e7e9ea]">
             <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
         </svg>
     </div>
 
-    <!-- Main Layout -->
-    <div class="flex-grow flex flex-col md:flex-row w-full h-full relative">
+    <!-- 1. 메인 레이아웃 (모바일: 세로, PC: 가로) -->
+    <div class="flex h-dvh w-full">
         
-        <!-- LEFT COLUMN: Desktop Logo -->
-        <div class="hidden md:flex md:w-1/2 h-full justify-center items-center bg-white dark:bg-black relative">
+        <!-- PC용 왼쪽: 대형 로고 영역 -->
+        <div class="hidden md:flex md:w-1/2 h-full justify-center items-center bg-white dark:bg-black relative transition-colors duration-300">
             <svg viewBox="0 0 24 24" aria-hidden="true" class="w-[300px] lg:w-[380px] fill-black dark:fill-[#e7e9ea]">
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
             </svg>
         </div>
 
-        <!-- RIGHT COLUMN: Content -->
-        <!-- 정렬 수정: items-center 제거하여 왼쪽 정렬 기준점 마련, padding으로 위치 조정 -->
-        <div class="w-full md:w-1/2 h-full bg-white dark:bg-black flex flex-col justify-center px-6 md:pl-12 lg:pl-16 xl:pl-24 relative overflow-y-auto no-scrollbar">
+        <!-- 오른쪽: 콘텐츠 영역 (스크롤 가능) -->
+        <div class="w-full md:w-1/2 h-full flex flex-col bg-white dark:bg-black overflow-y-auto">
             
-            <div class="w-full flex flex-col py-10">
+            <!-- 콘텐츠 래퍼: 중앙 정렬 & 패딩 -->
+            <div class="flex-grow flex flex-col justify-center px-6 md:px-12 lg:px-20 py-8 min-h-0">
                 
-                <!-- Mobile Logo -->
-                <div class="md:hidden mb-12 flex justify-start">
-                     <svg viewBox="0 0 24 24" aria-hidden="true" class="w-10 h-10 fill-black dark:fill-[#e7e9ea]">
+                <!-- 모바일 로고 (상단 고정 아님, 흐름 내 배치) -->
+                <div class="md:hidden mb-10 flex justify-start">
+                     <svg viewBox="0 0 24 24" aria-hidden="true" class="w-8 h-8 fill-black dark:fill-[#e7e9ea]">
                         <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
                     </svg>
                 </div>
 
-                <!-- Headings -->
-                <!-- 너비 제한을 풀어 텍스트 줄바꿈 방지 및 break-keep 적용 -->
-                <div class="mb-12 w-full max-w-[700px]">
-                    <h1 class="text-[40px] md:text-[64px] font-extrabold mb-10 tracking-wide text-[#0f1419] dark:text-[#e7e9ea] leading-tight break-keep" style="line-height: 1.2;">지금 일어나고 있는 일</h1>
-                    <h2 class="text-[23px] md:text-[31px] font-bold mb-8 text-[#0f1419] dark:text-[#e7e9ea] break-keep">지금 가입하세요.</h2>
+                <!-- 메인 텍스트 -->
+                <div class="mb-10 w-full max-w-[600px]">
+                    <h1 class="text-[40px] md:text-[64px] font-extrabold mb-8 tracking-wide text-[#0f1419] dark:text-[#e7e9ea] leading-tight break-keep">지금 일어나고 있는 일</h1>
+                    <h2 class="text-[23px] md:text-[31px] font-bold mb-8 text-[#0f1419] dark:text-[#e7e9ea]">지금 가입하세요.</h2>
                 </div>
 
-                <!-- Auth Buttons -->
+                <!-- 버튼 그룹 -->
                 <div class="w-full max-w-[300px] flex flex-col gap-3">
                     
+                    <!-- 구글 가입 -->
                     <button class="bg-white text-[#0f1419] border border-[#cfd9de] dark:border-transparent hover:bg-[#f7f9f9] dark:hover:bg-[#e6e6e6] transition rounded-full h-10 px-4 flex items-center justify-center gap-2 font-medium text-[15px]">
                         <i class="fa-brands fa-google text-[18px]"></i>
                         <span class="text-sm">Google 계정으로 가입</span>
                     </button>
                     
+                    <!-- 애플 가입 -->
                     <button class="bg-white text-[#0f1419] border border-[#cfd9de] dark:border-transparent hover:bg-[#f7f9f9] dark:hover:bg-[#e6e6e6] transition rounded-full h-10 px-4 flex items-center justify-center gap-2 font-bold text-[15px]">
                         <i class="fa-brands fa-apple text-[20px]"></i>
                         <span class="text-sm">Apple에서 가입하기</span>
                     </button>
 
+                    <!-- 구분선 -->
                     <div class="flex items-center my-1">
                         <div class="h-px bg-[#cfd9de] dark:bg-[#2f3336] flex-1"></div>
                         <span class="px-2 text-[15px] text-[#0f1419] dark:text-[#e7e9ea] pb-1">또는</span>
                         <div class="h-px bg-[#cfd9de] dark:bg-[#2f3336] flex-1"></div>
                     </div>
 
+                    <!-- 계정 만들기 버튼 (요청하신 파란색) -->
                     <a href="https://x.com/i/flow/signup" target="_blank" class="bg-[#1d9bf0] hover:bg-[#1a8cd8] text-white transition rounded-full h-10 px-4 font-bold text-[15px] flex items-center justify-center decoration-0">
                         계정 만들기
                     </a>
 
-                    <p class="text-[11px] text-[#536471] dark:text-[#71767b] mt-1 leading-normal break-keep">
+                    <p class="text-[11px] text-[#536471] dark:text-[#71767b] mt-1 leading-normal">
                         가입하시거나 로그인하면 <span class="text-[#1d9bf0] cursor-pointer hover:underline">쿠키 사용</span>을 포함해 <span class="text-[#1d9bf0] cursor-pointer hover:underline">이용약관</span> 및 <span class="text-[#1d9bf0] cursor-pointer hover:underline">개인정보 처리방침</span>에 동의하게 됩니다.
                     </p>
 
-                    <div class="mt-14">
+                    <!-- 로그인 섹션 -->
+                    <div class="mt-10 md:mt-14">
                         <p class="font-bold text-[17px] mb-4 text-[#0f1419] dark:text-[#e7e9ea]">이미 계정이 있으신가요?</p>
                         <button id="signin-trigger-btn" class="w-full border border-[#cfd9de] dark:border-[#536471] text-[#1d9bf0] hover:bg-[#e8f5fd] dark:hover:bg-[rgba(29,155,240,0.1)] transition rounded-full h-10 font-bold text-[15px]">
                             로그인
                         </button>
                         
+                        <!-- Grok 버튼 -->
                         <a href="https://grok.com/" target="_blank" class="grok-btn group">
                             <span class="mr-2 font-bold">/</span> 
                             <span>Grok 살펴보기</span>
@@ -152,38 +208,39 @@
                     </div>
                 </div>
             </div>
+
+            <!-- 2. 푸터 영역 (스크롤 영역의 맨 끝에 배치하여 가려짐 해결) -->
+            <div class="w-full py-4 px-4 mt-auto">
+                <div class="flex flex-wrap justify-center text-[13px] text-[#536471] dark:text-[#71767b] gap-y-1">
+                    <div class="footer-item"><span class="footer-link">소개</span></div>
+                    <div class="footer-item"><span class="footer-link">X 앱 다운로드하기</span></div>
+                    <div class="footer-item"><span class="footer-link">고객센터</span></div>
+                    <div class="footer-item"><span class="footer-link">이용약관</span></div>
+                    <div class="footer-item"><span class="footer-link">개인정보 처리방침</span></div>
+                    <div class="footer-item"><span class="footer-link">쿠키 정책</span></div>
+                    <div class="footer-item"><span class="footer-link">접근성</span></div>
+                    <div class="footer-item"><span class="footer-link">광고 정보</span></div>
+                    <div class="footer-item"><span class="footer-link">블로그</span></div>
+                    <div class="footer-item"><span class="footer-link">상태</span></div>
+                    <div class="footer-item"><span class="footer-link">채용</span></div>
+                    <div class="footer-item"><span class="footer-link">브랜드 리소스</span></div>
+                    <div class="footer-item"><span class="footer-link">광고</span></div>
+                    <div class="footer-item"><span class="footer-link">마케팅</span></div>
+                    <div class="footer-item"><span class="footer-link">X 비즈니스</span></div>
+                    <div class="footer-item"><span class="footer-link">개발자</span></div>
+                    <div class="footer-item"><span class="footer-link">디렉터리</span></div>
+                    <div class="footer-item"><span class="footer-link">설정</span></div>
+                    <div class="footer-item"><span>© 2025 X Corp.</span></div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <div class="w-full bg-white dark:bg-black py-3 md:fixed md:bottom-0 md:left-0 md:z-10">
-        <div class="footer-container">
-            <div class="footer-item"><span class="footer-link">소개</span></div>
-            <div class="footer-item"><span class="footer-link">X 앱 다운로드하기</span></div>
-            <div class="footer-item"><span class="footer-link">고객센터</span></div>
-            <div class="footer-item"><span class="footer-link">이용약관</span></div>
-            <div class="footer-item"><span class="footer-link">개인정보 처리방침</span></div>
-            <div class="footer-item"><span class="footer-link">쿠키 정책</span></div>
-            <div class="footer-item"><span class="footer-link">접근성</span></div>
-            <div class="footer-item"><span class="footer-link">광고 정보</span></div>
-            <div class="footer-item"><span class="footer-link">블로그</span></div>
-            <div class="footer-item"><span class="footer-link">상태</span></div>
-            <div class="footer-item"><span class="footer-link">채용</span></div>
-            <div class="footer-item"><span class="footer-link">브랜드 리소스</span></div>
-            <div class="footer-item"><span class="footer-link">광고</span></div>
-            <div class="footer-item"><span class="footer-link">마케팅</span></div>
-            <div class="footer-item"><span class="footer-link">X 비즈니스</span></div>
-            <div class="footer-item"><span class="footer-link">개발자</span></div>
-            <div class="footer-item"><span class="footer-link">디렉터리</span></div>
-            <div class="footer-item"><span class="footer-link">설정</span></div>
-            <div class="footer-item" style="border:none;"><span class="footer-link" style="padding-right:0;">© 2025 X Corp.</span></div>
-        </div>
-    </div>
-
-    <!-- Login Modal -->
+    <!-- 로그인 모달 -->
     <div id="login-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-[rgba(0,0,0,0.4)] dark:bg-[rgba(91,112,131,0.4)] backdrop-blur-sm p-0 md:p-4">
-        <div class="relative bg-white dark:bg-black w-full h-full md:h-auto md:max-w-[600px] md:min-h-[400px] md:rounded-2xl flex flex-col shadow-2xl overflow-hidden transition-colors duration-300">
+        <div class="relative bg-white dark:bg-black w-full h-full md:h-auto md:max-w-[600px] md:min-h-[400px] md:rounded-2xl flex flex-col shadow-2xl overflow-hidden md:max-h-[90vh]">
             
+            <!-- 모달 헤더 -->
             <div class="h-[53px] flex items-center px-4 shrink-0 w-full relative">
                 <button id="close-modal" class="w-9 h-9 rounded-full hover:bg-[rgba(15,20,25,0.1)] dark:hover:bg-[rgba(239,243,244,0.1)] flex items-center justify-center transition absolute left-4">
                     <span class="text-xl text-[#0f1419] dark:text-[#eff3f4] leading-none">&times;</span>
@@ -195,6 +252,7 @@
                 </div>
             </div>
 
+            <!-- Step 1 -->
             <div id="modal-step-1" class="flex-1 flex flex-col px-8 md:px-20 pb-12 overflow-y-auto no-scrollbar">
                 <div class="flex-1 flex flex-col justify-start pt-6 md:pt-0 md:justify-center min-h-[350px]">
                     <h2 class="text-[31px] font-bold mb-8 text-[#0f1419] dark:text-[#e7e9ea] leading-tight">X에 로그인하기</h2>
@@ -220,7 +278,8 @@
                         <label for="username-input" class="x-input-label">휴대폰 번호, 이메일 주소 또는 사용자 아이디</label>
                     </div>
 
-                    <button id="next-btn" class="bg-[#0f1419] dark:bg-[#eff3f4] text-white dark:text-[#0f1419] font-bold rounded-full h-9 mt-2 hover:opacity-90 transition disabled:opacity-50 disabled:bg-[#787a7a] disabled:text-[#16181c] disabled:cursor-not-allowed w-full mb-4" disabled>
+                    <!-- 요청하신 파란색 버튼 적용 (이전엔 검정/흰색이었음) -->
+                    <button id="next-btn" class="bg-[#1d9bf0] text-white font-bold rounded-full h-9 mt-2 hover:bg-[#1a8cd8] transition disabled:opacity-50 disabled:bg-[#787a7a] disabled:cursor-not-allowed w-full mb-4" disabled>
                         다음
                     </button>
 
@@ -234,6 +293,7 @@
                 </div>
             </div>
 
+            <!-- Step 2 -->
             <div id="modal-step-2" class="hidden flex-1 flex flex-col px-8 md:px-20 pb-12 overflow-y-auto no-scrollbar">
                 <div class="flex-1 flex flex-col justify-start pt-6 min-h-[350px]">
                     <h2 class="text-[31px] font-bold mb-8 text-[#0f1419] dark:text-[#e7e9ea] leading-tight">비밀번호를 입력하세요</h2>
@@ -253,7 +313,8 @@
                     
                     <a href="#" class="text-[13px] text-[#1d9bf0] hover:underline mb-auto pl-1">비밀번호 찾기</a>
 
-                    <button id="login-final-btn" class="bg-[#0f1419] dark:bg-[#eff3f4] text-white dark:text-[#0f1419] font-bold rounded-full h-12 text-[15px] hover:opacity-90 transition w-full mt-8 mb-4 shadow-lg">
+                    <!-- 요청하신 파란색 버튼 적용 -->
+                    <button id="login-final-btn" class="bg-[#1d9bf0] text-white font-bold rounded-full h-12 text-[15px] hover:bg-[#1a8cd8] transition w-full mt-8 mb-4 shadow-lg">
                         로그인하기
                     </button>
                 </div>
@@ -262,12 +323,14 @@
     </div>
 
     <script>
+        // --- 로딩 화면 로직 ---
         window.addEventListener('load', () => {
             const loader = document.getElementById('loading-screen');
             setTimeout(() => { loader.classList.add('fade-out'); }, 800);
             setTimeout(() => { loader.style.display = 'none'; }, 1300);
         });
 
+        // --- 인터랙션 로직 ---
         const modal = document.getElementById('login-modal');
         const signinBtn = document.getElementById('signin-trigger-btn');
         const closeModal = document.getElementById('close-modal');
@@ -280,6 +343,7 @@
         const displayUser = document.getElementById('display-username');
         const togglePw = document.getElementById('toggle-pw');
 
+        // 모달 열기
         signinBtn.addEventListener('click', () => {
             if(signinBtn.classList.contains('text-green-500')) return;
             modal.classList.remove('hidden');
@@ -288,52 +352,68 @@
             usernameInput.value = '';
             passwordInput.value = '';
             nextBtn.disabled = true;
-            nextBtn.classList.add('bg-[#787a7a]', 'text-[#16181c]');
-            nextBtn.classList.remove('bg-[#eff3f4]', 'text-[#0f1419]');
-            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-                 nextBtn.classList.add('bg-opacity-50');
-            }
+            nextBtn.classList.add('bg-[#787a7a]', 'cursor-not-allowed'); // Disabled color
+            nextBtn.classList.remove('bg-[#1d9bf0]');
             setTimeout(() => usernameInput.focus(), 100);
         });
 
-        closeModal.addEventListener('click', () => { modal.classList.add('hidden'); });
+        closeModal.addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
 
+        // 아이디 입력 감지 (버튼 색상 활성화)
         usernameInput.addEventListener('input', (e) => {
-            const isLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
             if(e.target.value.trim().length > 0) {
                 nextBtn.disabled = false;
-                nextBtn.classList.remove('bg-[#787a7a]', 'text-[#16181c]', 'bg-opacity-50');
+                nextBtn.classList.remove('bg-[#787a7a]', 'cursor-not-allowed');
+                nextBtn.classList.add('bg-[#1d9bf0]'); // Blue when active
             } else {
                 nextBtn.disabled = true;
-                nextBtn.classList.add('bg-[#787a7a]', 'text-[#16181c]');
-                if (isLight) nextBtn.classList.add('bg-opacity-50');
+                nextBtn.classList.add('bg-[#787a7a]', 'cursor-not-allowed');
+                nextBtn.classList.remove('bg-[#1d9bf0]');
             }
         });
 
-        usernameInput.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !nextBtn.disabled) nextBtn.click(); });
+        usernameInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !nextBtn.disabled) nextBtn.click();
+        });
+
         nextBtn.addEventListener('click', () => {
             displayUser.innerText = usernameInput.value;
             step1.classList.add('hidden');
             step2.classList.remove('hidden');
             setTimeout(() => passwordInput.focus(), 100);
         });
+
+        // 비밀번호 토글
         togglePw.addEventListener('click', () => {
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInput.setAttribute('type', type);
             togglePw.innerText = type === 'password' ? '보기' : '숨기기';
         });
-        passwordInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') loginFinalBtn.click(); });
 
+        passwordInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') loginFinalBtn.click();
+        });
+
+        // 로그인 시뮬레이션
         loginFinalBtn.addEventListener('click', () => {
-            if(passwordInput.value.length === 0) { alert('비밀번호를 입력해주세요.'); return; }
+            if(passwordInput.value.length === 0) {
+                alert('비밀번호를 입력해주세요.');
+                return;
+            }
+
             const originalText = loginFinalBtn.innerText;
             loginFinalBtn.innerText = '로그인 중...';
+            
             setTimeout(() => {
                 loginFinalBtn.innerText = originalText;
                 modal.classList.add('hidden');
+                
                 signinBtn.innerHTML = `<span class="flex items-center justify-center gap-2">✅ ${usernameInput.value}</span>`;
-                signinBtn.classList.remove('text-[#1d9bf0]', 'border-[#536471]');
+                signinBtn.classList.remove('text-[#1d9bf0]', 'border-[#536471]', 'border-[#cfd9de]');
                 signinBtn.classList.add('text-green-500', 'border-green-500', 'bg-[rgba(0,255,0,0.1)]');
+                
                 alert(`[DEMO]\n로그인 성공 시뮬레이션입니다.\n입력한 ID: ${usernameInput.value}`);
             }, 1000);
         });
