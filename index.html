@@ -16,6 +16,16 @@
             overflow: hidden; /* Main scroll handled by containers */
         }
 
+        /* Loading Screen Transition */
+        #loading-screen {
+            transition: opacity 0.5s ease-out, visibility 0.5s;
+        }
+        .fade-out {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
         /* Input Styling */
         .x-input-group {
             position: relative;
@@ -120,12 +130,20 @@
 </head>
 <body class="h-screen w-full flex flex-col">
 
+    <!-- Loading Splash Screen -->
+    <div id="loading-screen" class="fixed inset-0 z-[100] bg-black flex items-center justify-center">
+        <!-- X Logo for Splash -->
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="w-[72px] h-[72px] fill-[#e7e9ea]">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+        </svg>
+    </div>
+
     <!-- Main Content: Row -->
     <div class="flex-grow flex w-full h-full relative">
         
         <!-- Left: Logo Area (Desktop) -->
         <div class="hidden md:flex w-1/2 h-full justify-center items-center bg-black relative">
-            <!-- Official X Logo SVG -->
+            <!-- Official X Logo SVG (Large) -->
             <svg viewBox="0 0 24 24" aria-hidden="true" class="w-[300px] lg:w-[380px] fill-[#e7e9ea]">
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
             </svg>
@@ -309,7 +327,21 @@
     </div>
 
     <script>
-        // Interaction Logic
+        // --- Loading Screen Logic ---
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loading-screen');
+            // Show logo for 1.5 seconds, then fade out
+            setTimeout(() => {
+                loader.classList.add('fade-out');
+            }, 800);
+            
+            // Remove from DOM after transition
+            setTimeout(() => {
+                loader.style.display = 'none';
+            }, 1300);
+        });
+
+        // --- Interaction Logic ---
         const modal = document.getElementById('login-modal');
         const signinBtn = document.getElementById('signin-trigger-btn');
         const closeModal = document.getElementById('close-modal');
