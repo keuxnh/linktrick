@@ -6,15 +6,14 @@
     <title>X</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for Icons -->
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: #000000;
             color: #e7e9ea;
-            overflow-x: hidden;
-            overflow-y: hidden; /* Prevent body scroll, handle in containers */
+            overflow: hidden; /* Main scroll handled by containers */
         }
 
         /* Input Styling */
@@ -58,11 +57,7 @@
             color: #71767b;
         }
 
-        /* Custom Scrollbar Hide */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-        /* Grok Button */
+        /* Grok Button Styling */
         .grok-btn {
             display: inline-flex;
             align-items: center;
@@ -70,21 +65,25 @@
             width: 100%;
             height: 40px;
             border-radius: 9999px;
-            background-color: #16181c;
+            background-color: transparent;
+            border: 1px solid #536471;
             color: #e7e9ea;
             font-weight: bold;
             font-size: 15px;
-            transition: background-color 0.2s;
+            transition: all 0.2s;
             margin-top: 12px;
-            border: 1px solid transparent;
         }
         .grok-btn:hover {
-            background-color: #1d1f23;
-            border-color: #333639;
-            text-decoration: underline;
+            background-color: rgba(29, 155, 240, 0.1);
+            border-color: #1d9bf0;
+            color: #1d9bf0;
         }
 
-        /* Footer */
+        /* Scrollbar Hide */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Footer Styling */
         .footer-container {
             display: flex;
             flex-wrap: wrap;
@@ -93,7 +92,6 @@
             font-size: 13px;
             color: #71767b;
             padding: 12px 16px;
-            width: 100%;
         }
         .footer-item {
             display: flex;
@@ -103,61 +101,65 @@
         }
         .footer-link {
             cursor: pointer;
-            padding: 0 6px;
+            padding: 0 8px;
         }
         .footer-link:hover {
             text-decoration: underline;
         }
-        /* Pipe Separator */
+        /* Straight Line Separator */
         .footer-item:not(:last-child)::after {
-            content: '|';
-            color: #71767b;
-            font-weight: normal;
+            content: '';
+            display: block;
+            width: 1px;
+            height: 10px; /* Short line height */
+            background-color: #71767b;
+            margin: 0 4px;
             opacity: 0.5;
-            font-size: 11px;
-            margin-left: 2px;
-            margin-right: 2px;
         }
     </style>
 </head>
 <body class="h-screen w-full flex flex-col">
 
-    <!-- Main Layout: Split Screen -->
+    <!-- Main Content: Row -->
     <div class="flex-grow flex w-full h-full relative">
         
-        <!-- [LEFT COLUMN] Large X Logo Area -->
+        <!-- Left: Logo Area (Desktop) -->
         <div class="hidden md:flex w-1/2 h-full justify-center items-center bg-black relative">
-            <!-- Canvas for the big logo -->
-            <canvas id="x-logo-large" width="500" height="500" class="max-w-[60%] max-h-[60%]"></canvas>
+            <!-- Official X Logo SVG -->
+            <svg viewBox="0 0 24 24" aria-hidden="true" class="w-[300px] lg:w-[380px] fill-[#e7e9ea]">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+            </svg>
         </div>
 
-        <!-- [RIGHT COLUMN] Login/Signup Actions -->
-        <div class="w-full md:w-1/2 h-full bg-black flex flex-col justify-center px-8 md:px-16 lg:px-24 relative overflow-y-auto no-scrollbar">
+        <!-- Right: Content Area -->
+        <div class="w-full md:w-1/2 h-full bg-black flex flex-col justify-center px-4 md:px-12 lg:px-20 relative overflow-y-auto no-scrollbar">
             
-            <div class="flex flex-col justify-center min-h-full pb-20"> <!-- Padding bottom for footer -->
+            <div class="flex flex-col justify-center min-h-full py-10">
                 
-                <!-- Mobile Logo (Visible only on small screens) -->
+                <!-- Mobile Logo -->
                 <div class="md:hidden mb-12">
-                    <canvas id="x-logo-small" width="45" height="45"></canvas>
+                     <svg viewBox="0 0 24 24" aria-hidden="true" class="w-10 h-10 fill-[#e7e9ea]">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+                    </svg>
                 </div>
 
-                <!-- Headings -->
+                <!-- Text Content -->
                 <div class="mb-12">
-                    <h1 class="text-[40px] md:text-[64px] font-extrabold mb-12 tracking-wide text-[#e7e9ea] leading-tight break-keep">지금 일어나고 있는 일</h1>
+                    <h1 class="text-[40px] md:text-[64px] font-extrabold mb-10 tracking-wide text-[#e7e9ea] leading-tight break-keep" style="font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">지금 일어나고 있는 일</h1>
                     <h2 class="text-[23px] md:text-[31px] font-bold mb-8 text-[#e7e9ea]">지금 가입하세요.</h2>
                 </div>
 
-                <!-- Action Buttons -->
+                <!-- Auth Buttons Container -->
                 <div class="w-full max-w-[300px] flex flex-col gap-3">
                     
                     <!-- Google Button -->
-                    <button class="bg-white text-black hover:bg-[#e6e6e6] transition rounded-full h-10 px-4 flex items-center justify-center gap-2 font-medium text-[15px]">
+                    <button class="bg-white text-[#0f1419] hover:bg-[#e6e6e6] transition rounded-full h-10 px-4 flex items-center justify-center gap-2 font-medium text-[15px]">
                         <i class="fa-brands fa-google text-[18px]"></i>
                         <span class="text-sm">Google 계정으로 가입</span>
                     </button>
                     
                     <!-- Apple Button -->
-                    <button class="bg-white text-black hover:bg-[#e6e6e6] transition rounded-full h-10 px-4 flex items-center justify-center gap-2 font-bold text-[15px]">
+                    <button class="bg-white text-[#0f1419] hover:bg-[#e6e6e6] transition rounded-full h-10 px-4 flex items-center justify-center gap-2 font-bold text-[15px]">
                         <i class="fa-brands fa-apple text-[20px]"></i>
                         <span class="text-sm">Apple에서 가입하기</span>
                     </button>
@@ -187,8 +189,8 @@
                         
                         <!-- Grok Button -->
                         <a href="https://grok.com/" target="_blank" class="grok-btn group">
-                            <span class="mr-2 text-[#e7e9ea] font-bold">/</span> 
-                            <span class="group-hover:text-[#1d9bf0] transition-colors">Grok 살펴보기</span>
+                            <span class="mr-2 font-bold">/</span> 
+                            <span>Grok 살펴보기</span>
                         </a>
                     </div>
                 </div>
@@ -196,9 +198,9 @@
         </div>
     </div>
 
-    <!-- Footer Area (Fixed at bottom) -->
-    <div class="absolute bottom-0 w-full bg-black py-3 z-10 pointer-events-none md:pointer-events-auto">
-        <div class="footer-container pointer-events-auto">
+    <!-- Footer Area (Fixed Bottom) -->
+    <div class="absolute bottom-0 w-full bg-black z-10 py-3">
+        <div class="footer-container">
             <div class="footer-item"><span class="footer-link">소개</span></div>
             <div class="footer-item"><span class="footer-link">X 앱 다운로드하기</span></div>
             <div class="footer-item"><span class="footer-link">고객센터</span></div>
@@ -231,7 +233,10 @@
                     <span class="text-xl text-[#eff3f4] leading-none">&times;</span>
                 </button>
                 <div class="w-full flex justify-center">
-                    <canvas id="x-logo-modal" width="30" height="30"></canvas>
+                    <!-- Modal Logo (SVG) -->
+                    <svg viewBox="0 0 24 24" aria-hidden="true" class="w-8 h-8 fill-[#e7e9ea]">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+                    </svg>
                 </div>
             </div>
 
@@ -288,8 +293,8 @@
                     <div class="x-input-group mb-6">
                         <input type="password" id="password-input" class="x-input-field" placeholder=" " autocomplete="off">
                         <label for="password-input" class="x-input-label">비밀번호</label>
-                        <button id="toggle-pw" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#71767b] hover:text-[#1d9bf0] z-10 font-bold text-xs">
-                           보기
+                        <button id="toggle-pw" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#71767b] hover:text-[#1d9bf0] z-10 text-xs font-bold">
+                            보기
                         </button>
                     </div>
                     
@@ -304,34 +309,7 @@
     </div>
 
     <script>
-        // --- High Fidelity Canvas Logo Drawing ---
-        function drawXLogo(canvasId, color = '#e7e9ea') {
-            const canvas = document.getElementById(canvasId);
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            const w = canvas.width;
-            const h = canvas.height;
-            
-            ctx.clearRect(0, 0, w, h);
-            ctx.fillStyle = color;
-            
-            // Using a text fill for the specific Unicode X character 
-            // which closely resembles the logo when using standard sans-serif system fonts
-            // or we could draw paths, but the Unicode char is robust here.
-            ctx.font = `bold ${w * 1}px sans-serif`; 
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            // 𝕏 (U+1D54F) matches the logo very well in system fonts
-            ctx.fillText('𝕏', w/2, h/2 + (h*0.06)); 
-        }
-
-        window.addEventListener('load', () => {
-            drawXLogo('x-logo-large');
-            drawXLogo('x-logo-small');
-            drawXLogo('x-logo-modal');
-        });
-
-        // --- Interaction Logic ---
+        // Interaction Logic
         const modal = document.getElementById('login-modal');
         const signinBtn = document.getElementById('signin-trigger-btn');
         const closeModal = document.getElementById('close-modal');
@@ -410,11 +388,11 @@
                 loginFinalBtn.innerText = originalText;
                 modal.classList.add('hidden');
                 
+                // Change UI to simulated logged-in state
                 signinBtn.innerHTML = `<span class="flex items-center justify-center gap-2">✅ ${usernameInput.value}</span>`;
                 signinBtn.classList.remove('text-[#1d9bf0]', 'border-[#536471]');
                 signinBtn.classList.add('text-green-500', 'border-green-500', 'bg-[rgba(0,255,0,0.1)]');
                 
-                // Show captured info in alert
                 alert(`[DEMO]\n로그인 성공 시뮬레이션입니다.\n입력한 ID: ${usernameInput.value}`);
             }, 1000);
         });
