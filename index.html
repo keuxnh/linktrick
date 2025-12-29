@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #000000;
+            color: #e7e9ea;
+            overflow-x: hidden;
+            overflow-y: hidden; /* Prevent body scroll, handle in containers */
+        }
+
+        /* Input Styling */
+        .x-input-group {
+            position: relative;
+            border: 1px solid #333639;
+            border-radius: 4px;
+            background: #000;
+            transition: all 0.2s;
+        }
+        .x-input-group:focus-within {
+            border-color: #1d9bf0;
+            box-shadow: 0 0 0 1px #1d9bf0;
+        }
+        .x-input-label {
+            position: absolute;
+            left: 8px;
+            top: 16px;
+            color: #71767b;
+            font-size: 17px;
+            transition: all 0.2s;
+            pointer-events: none;
+            transform-origin: left top;
+        }
+        .x-input-field {
+            width: 100%;
+            padding: 26px 8px 8px 8px;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 17px;
+            outline: none;
+        }
+        .x-input-field:focus + .x-input-label,
+        .x-input-field:not(:placeholder-shown) + .x-input-label {
+            top: 6px;
+            font-size: 13px;
+            color: #1d9bf0;
+        }
+        .x-input-field:not(:focus):not(:placeholder-shown) + .x-input-label {
+            color: #71767b;
+        }
+
+        /* Custom Scrollbar Hide */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Grok Button */
+        .grok-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 40px;
+            border-radius: 9999px;
+            background-color: #16181c;
+            color: #e7e9ea;
+            font-weight: bold;
+            font-size: 15px;
+            transition: background-color 0.2s;
+            margin-top: 12px;
+            border: 1px solid transparent;
+        }
+        .grok-btn:hover {
+            background-color: #1d1f23;
+            border-color: #333639;
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        .footer-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0;
+            font-size: 13px;
+            color: #71767b;
+            padding: 12px 16px;
+            width: 100%;
+        }
+        .footer-item {
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            line-height: 1.5;
+        }
+        .footer-link {
+            cursor: pointer;
+            padding: 0 6px;
+        }
+        .footer-link:hover {
+            text-decoration: underline;
+        }
+        /* Pipe Separator */
+        .footer-item:not(:last-child)::after {
+            content: '|';
+            color: #71767b;
+            font-weight: normal;
+            opacity: 0.5;
+            font-size: 11px;
+            margin-left: 2px;
+            margin-right: 2px;
+        }
+    </style>
+</head>
+<body class="h-screen w-full flex flex-col">
+
+    <!-- Main Layout: Split Screen -->
+    <div class="flex-grow flex w-full h-full relative">
+        
+        <!-- [LEFT COLUMN] Large X Logo Area -->
+        <div class="hidden md:flex w-1/2 h-full justify-center items-center bg-black relative">
+            <!-- Canvas for the big logo -->
+            <canvas id="x-logo-large" width="500" height="500" class="max-w-[60%] max-h-[60%]"></canvas>
+        </div>
+
+        <!-- [RIGHT COLUMN] Login/Signup Actions -->
+        <div class="w-full md:w-1/2 h-full bg-black flex flex-col justify-center px-8 md:px-16 lg:px-24 relative overflow-y-auto no-scrollbar">
+            
+            <div class="flex flex-col justify-center min-h-full pb-20"> <!-- Padding bottom for footer -->
+                
+                <!-- Mobile Logo (Visible only on small screens) -->
+                <div class="md:hidden mb-12">
+                    <canvas id="x-logo-small" width="45" height="45"></canvas>
+                </div>
+
+                <!-- Headings -->
+                <div class="mb-12">
+                    <h1 class="text-[40px] md:text-[64px] font-extrabold mb-12 tracking-wide text-[#e7e9ea] leading-tight break-keep">지금 일어나고 있는 일</h1>
+                    <h2 class="text-[23px] md:text-[31px] font-bold mb-8 text-[#e7e9ea]">지금 가입하세요.</h2>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="w-full max-w-[300px] flex flex-col gap-3">
+                    
+                    <!-- Google Button -->
+                    <button class="bg-white text-black hover:bg-[#e6e6e6] transition rounded-full h-10 px-4 flex items-center justify-center gap-2 font-medium text-[15px]">
+                        <i class="fa-brands fa-google text-[18px]"></i>
+                        <span class="text-sm">Google 계정으로 가입</span>
+                    </button>
+                    
+                    <!-- Apple Button -->
+                    <button class="bg-white text-black hover:bg-[#e6e6e6] transition rounded-full h-10 px-4 flex items-center justify-center gap-2 font-bold text-[15px]">
+                        <i class="fa-brands fa-apple text-[20px]"></i>
+                        <span class="text-sm">Apple에서 가입하기</span>
+                    </button>
+
+                    <!-- Divider -->
+                    <div class="flex items-center my-1">
+                        <div class="h-px bg-[#2f3336] flex-1"></div>
+                        <span class="px-2 text-[15px] text-[#e7e9ea] pb-1">또는</span>
+                        <div class="h-px bg-[#2f3336] flex-1"></div>
+                    </div>
+
+                    <!-- Create Account Link -->
+                    <a href="https://x.com/i/flow/signup" target="_blank" class="bg-[#1d9bf0] hover:bg-[#1a8cd8] text-white transition rounded-full h-10 px-4 font-bold text-[15px] flex items-center justify-center decoration-0">
+                        계정 만들기
+                    </a>
+
+                    <p class="text-[11px] text-[#71767b] mt-1 leading-normal">
+                        가입하시거나 로그인하면 <span class="text-[#1d9bf0] cursor-pointer hover:underline">쿠키 사용</span>을 포함해 <span class="text-[#1d9bf0] cursor-pointer hover:underline">이용약관</span> 및 <span class="text-[#1d9bf0] cursor-pointer hover:underline">개인정보 처리방침</span>에 동의하게 됩니다.
+                    </p>
+
+                    <!-- Login Section -->
+                    <div class="mt-14">
+                        <p class="font-bold text-[17px] mb-4 text-[#e7e9ea]">이미 계정이 있으신가요?</p>
+                        <button id="signin-trigger-btn" class="w-full border border-[#536471] text-[#1d9bf0] hover:bg-[rgba(29,155,240,0.1)] transition rounded-full h-10 font-bold text-[15px]">
+                            로그인
+                        </button>
+                        
+                        <!-- Grok Button -->
+                        <a href="https://grok.com/" target="_blank" class="grok-btn group">
+                            <span class="mr-2 text-[#e7e9ea] font-bold">/</span> 
+                            <span class="group-hover:text-[#1d9bf0] transition-colors">Grok 살펴보기</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Area (Fixed at bottom) -->
+    <div class="absolute bottom-0 w-full bg-black py-3 z-10 pointer-events-none md:pointer-events-auto">
+        <div class="footer-container pointer-events-auto">
+            <div class="footer-item"><span class="footer-link">소개</span></div>
+            <div class="footer-item"><span class="footer-link">X 앱 다운로드하기</span></div>
+            <div class="footer-item"><span class="footer-link">고객센터</span></div>
+            <div class="footer-item"><span class="footer-link">이용약관</span></div>
+            <div class="footer-item"><span class="footer-link">개인정보 처리방침</span></div>
+            <div class="footer-item"><span class="footer-link">쿠키 정책</span></div>
+            <div class="footer-item"><span class="footer-link">접근성</span></div>
+            <div class="footer-item"><span class="footer-link">광고 정보</span></div>
+            <div class="footer-item"><span class="footer-link">블로그</span></div>
+            <div class="footer-item"><span class="footer-link">상태</span></div>
+            <div class="footer-item"><span class="footer-link">채용</span></div>
+            <div class="footer-item"><span class="footer-link">브랜드 리소스</span></div>
+            <div class="footer-item"><span class="footer-link">광고</span></div>
+            <div class="footer-item"><span class="footer-link">마케팅</span></div>
+            <div class="footer-item"><span class="footer-link">X 비즈니스</span></div>
+            <div class="footer-item"><span class="footer-link">개발자</span></div>
+            <div class="footer-item"><span class="footer-link">디렉터리</span></div>
+            <div class="footer-item"><span class="footer-link">설정</span></div>
+            <div class="footer-item" style="border:none;"><span class="footer-link" style="padding-right:0;">© 2025 X Corp.</span></div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-[rgba(91,112,131,0.4)] backdrop-blur-sm">
+        <div class="relative bg-black w-full h-full md:h-auto md:max-w-[600px] md:min-h-[400px] md:rounded-2xl flex flex-col shadow-2xl overflow-hidden md:max-h-[90vh]">
+            
+            <!-- Header -->
+            <div class="h-[53px] flex items-center px-4 shrink-0 w-full relative">
+                <button id="close-modal" class="w-9 h-9 rounded-full hover:bg-[rgba(239,243,244,0.1)] flex items-center justify-center transition absolute left-4">
+                    <span class="text-xl text-[#eff3f4] leading-none">&times;</span>
+                </button>
+                <div class="w-full flex justify-center">
+                    <canvas id="x-logo-modal" width="30" height="30"></canvas>
+                </div>
+            </div>
+
+            <!-- Step 1 -->
+            <div id="modal-step-1" class="flex-1 flex flex-col px-8 md:px-20 pb-12 overflow-y-auto no-scrollbar">
+                <div class="flex-1 flex flex-col justify-start pt-6 md:pt-0 md:justify-center min-h-[350px]">
+                    <h2 class="text-[31px] font-bold mb-8 text-[#e7e9ea] leading-tight">X에 로그인하기</h2>
+                    
+                    <button class="bg-white text-black hover:bg-[#e6e6e6] transition rounded-full h-10 mb-4 px-4 flex items-center justify-center gap-2 font-medium text-[14px] w-full">
+                        <i class="fa-brands fa-google text-[18px]"></i>
+                        <span class="text-sm">Google 계정으로 로그인</span>
+                    </button>
+                    
+                    <button class="bg-white text-black hover:bg-[#e6e6e6] transition rounded-full h-10 mb-4 px-4 flex items-center justify-center gap-2 font-bold text-[14px] w-full">
+                        <i class="fa-brands fa-apple text-[20px]"></i>
+                        <span class="text-sm">Apple로 로그인</span>
+                    </button>
+
+                    <div class="flex items-center my-4">
+                        <div class="h-px bg-[#2f3336] flex-1"></div>
+                        <span class="px-2 text-sm text-[#e7e9ea]">또는</span>
+                        <div class="h-px bg-[#2f3336] flex-1"></div>
+                    </div>
+
+                    <div class="x-input-group mb-6">
+                        <input type="text" id="username-input" class="x-input-field" placeholder=" " autocomplete="off">
+                        <label for="username-input" class="x-input-label">휴대폰 번호, 이메일 주소 또는 사용자 아이디</label>
+                    </div>
+
+                    <button id="next-btn" class="bg-[#eff3f4] text-[#0f1419] font-bold rounded-full h-9 mt-2 hover:bg-[#d7dbdc] transition disabled:opacity-50 disabled:bg-[#787a7a] disabled:text-[#16181c] disabled:cursor-not-allowed w-full mb-4" disabled>
+                        다음
+                    </button>
+
+                    <button class="bg-black border border-[#536471] text-[#eff3f4] font-bold rounded-full h-9 hover:bg-[rgba(239,243,244,0.1)] transition w-full">
+                        비밀번호를 잊으셨나요?
+                    </button>
+                    
+                    <p class="text-[15px] text-[#71767b] mt-10 mb-4">
+                        계정이 없으신가요? <a href="https://x.com/i/flow/signup" target="_blank" class="text-[#1d9bf0] cursor-pointer hover:underline">가입하기</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div id="modal-step-2" class="hidden flex-1 flex flex-col px-8 md:px-20 pb-12 overflow-y-auto no-scrollbar">
+                <div class="flex-1 flex flex-col justify-start pt-6 min-h-[350px]">
+                    <h2 class="text-[31px] font-bold mb-8 text-[#e7e9ea] leading-tight">비밀번호를 입력하세요</h2>
+                    
+                    <div class="bg-[#eff3f4] bg-opacity-10 p-3 rounded mb-6 flex flex-col cursor-not-allowed opacity-60">
+                        <span class="text-xs text-[#71767b]">사용자 아이디</span>
+                        <span id="display-username" class="text-[#e7e9ea] font-bold">user</span>
+                    </div>
+
+                    <div class="x-input-group mb-6">
+                        <input type="password" id="password-input" class="x-input-field" placeholder=" " autocomplete="off">
+                        <label for="password-input" class="x-input-label">비밀번호</label>
+                        <button id="toggle-pw" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#71767b] hover:text-[#1d9bf0] z-10 font-bold text-xs">
+                           보기
+                        </button>
+                    </div>
+                    
+                    <a href="#" class="text-[13px] text-[#1d9bf0] hover:underline mb-auto pl-1">비밀번호 찾기</a>
+
+                    <button id="login-final-btn" class="bg-[#eff3f4] text-[#0f1419] font-bold rounded-full h-12 text-[15px] hover:bg-[#d7dbdc] transition w-full mt-8 mb-4 shadow-lg">
+                        로그인하기
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- High Fidelity Canvas Logo Drawing ---
+        function drawXLogo(canvasId, color = '#e7e9ea') {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;
+            const h = canvas.height;
+            
+            ctx.clearRect(0, 0, w, h);
+            ctx.fillStyle = color;
+            
+            // Using a text fill for the specific Unicode X character 
+            // which closely resembles the logo when using standard sans-serif system fonts
+            // or we could draw paths, but the Unicode char is robust here.
+            ctx.font = `bold ${w * 1}px sans-serif`; 
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            // 𝕏 (U+1D54F) matches the logo very well in system fonts
+            ctx.fillText('𝕏', w/2, h/2 + (h*0.06)); 
+        }
+
+        window.addEventListener('load', () => {
+            drawXLogo('x-logo-large');
+            drawXLogo('x-logo-small');
+            drawXLogo('x-logo-modal');
+        });
+
+        // --- Interaction Logic ---
+        const modal = document.getElementById('login-modal');
+        const signinBtn = document.getElementById('signin-trigger-btn');
+        const closeModal = document.getElementById('close-modal');
+        const nextBtn = document.getElementById('next-btn');
+        const loginFinalBtn = document.getElementById('login-final-btn');
+        const usernameInput = document.getElementById('username-input');
+        const passwordInput = document.getElementById('password-input');
+        const step1 = document.getElementById('modal-step-1');
+        const step2 = document.getElementById('modal-step-2');
+        const displayUser = document.getElementById('display-username');
+        const togglePw = document.getElementById('toggle-pw');
+
+        signinBtn.addEventListener('click', () => {
+            if(signinBtn.classList.contains('text-green-500')) return;
+            
+            modal.classList.remove('hidden');
+            step1.classList.remove('hidden');
+            step2.classList.add('hidden');
+            usernameInput.value = '';
+            passwordInput.value = '';
+            nextBtn.disabled = true;
+            nextBtn.classList.add('bg-[#787a7a]', 'text-[#16181c]');
+            nextBtn.classList.remove('bg-[#eff3f4]', 'text-[#0f1419]');
+            
+            setTimeout(() => usernameInput.focus(), 100);
+        });
+
+        closeModal.addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
+
+        usernameInput.addEventListener('input', (e) => {
+            if(e.target.value.trim().length > 0) {
+                nextBtn.disabled = false;
+                nextBtn.classList.remove('bg-[#787a7a]', 'text-[#16181c]');
+                nextBtn.classList.add('bg-[#eff3f4]', 'text-[#0f1419]');
+            } else {
+                nextBtn.disabled = true;
+                nextBtn.classList.add('bg-[#787a7a]', 'text-[#16181c]');
+                nextBtn.classList.remove('bg-[#eff3f4]', 'text-[#0f1419]');
+            }
+        });
+
+        usernameInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !nextBtn.disabled) nextBtn.click();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            displayUser.innerText = usernameInput.value;
+            step1.classList.add('hidden');
+            step2.classList.remove('hidden');
+            setTimeout(() => passwordInput.focus(), 100);
+        });
+
+        togglePw.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            togglePw.innerText = type === 'password' ? '보기' : '숨기기';
+        });
+
+        passwordInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') loginFinalBtn.click();
+        });
+
+        // Prank Simulation Logic
+        loginFinalBtn.addEventListener('click', () => {
+            if(passwordInput.value.length === 0) {
+                alert('비밀번호를 입력해주세요.');
+                return;
+            }
+
+            const originalText = loginFinalBtn.innerText;
+            loginFinalBtn.innerText = '로그인 중...';
+            
+            setTimeout(() => {
+                loginFinalBtn.innerText = originalText;
+                modal.classList.add('hidden');
+                
+                signinBtn.innerHTML = `<span class="flex items-center justify-center gap-2">✅ ${usernameInput.value}</span>`;
+                signinBtn.classList.remove('text-[#1d9bf0]', 'border-[#536471]');
+                signinBtn.classList.add('text-green-500', 'border-green-500', 'bg-[rgba(0,255,0,0.1)]');
+                
+                // Show captured info in alert
+                alert(`[DEMO]\n로그인 성공 시뮬레이션입니다.\n입력한 ID: ${usernameInput.value}`);
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
