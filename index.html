@@ -14,19 +14,11 @@
         body {
             font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             margin: 0; padding: 0;
-            /* 기본 스크롤 허용하되, PC 뷰에서는 내부 스크롤 사용 */
-            height: 100vh; height: 100dvh;
-            overflow: hidden; 
+            height: 100vh; height: 100dvh; 
+            overflow: hidden; /* 전체 페이지 스크롤 방지 (내부 스크롤 사용) */
         }
 
-        /* ---------------------------------------------------------
-           [중요] 모바일/태블릿 뷰에서는 전체 스크롤을 허용해야 함
-           PC 뷰(lg 이상)에서만 body 스크롤을 막고 내부 스크롤 사용
-        --------------------------------------------------------- */
-        @media (max-width: 1023px) {
-            body { overflow-y: auto; }
-        }
-
+        /* 입력 필드 테마 */
         .x-input-group {
             position: relative;
             border: 1px solid #cfd9de;
@@ -65,6 +57,7 @@
             top: 6px; font-size: 13px; color: #1d9bf0;
         }
 
+        /* Grok 버튼 */
         .grok-btn {
             display: inline-flex; align-items: center; justify-content: center;
             width: 100%; height: 40px; border-radius: 9999px;
@@ -80,6 +73,7 @@
             .grok-btn:hover { background-color: #f7f9f9; }
         }
 
+        /* 푸터 스타일 */
         .footer-container {
             display: flex; flex-wrap: wrap; justify-content: center;
             gap: 12px 0; padding: 12px 16px; font-size: 13px; color: #536471; line-height: 1.3;
@@ -92,6 +86,11 @@
         .footer-item:not(:last-child)::after {
             content: ''; display: block; width: 1px; height: 10px;
             background-color: #536471; margin: 0; position: absolute; right: 0; top: 50%; transform: translateY(-50%); opacity: 0.5;
+        }
+
+        /* 쿠키 배너 */
+        .cookie-banner {
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
         }
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -112,10 +111,9 @@
     </div>
 
     <!-- ========================================= -->
-    <!-- PC 레이아웃 (lg 이상: 1024px~)           -->
-    <!-- 아이패드 가로 모드 및 데스크탑             -->
+    <!-- PC 레이아웃 (md 이상) -->
     <!-- ========================================= -->
-    <div id="pc-view" class="hidden lg:flex h-screen w-full relative">
+    <div id="pc-view" class="hidden md:flex h-screen w-full relative">
         
         <!-- 왼쪽: 로고 -->
         <div class="w-1/2 h-full flex justify-center items-center relative">
@@ -125,7 +123,7 @@
         </div>
 
         <!-- 오른쪽: 로그인 폼 -->
-        <div class="w-1/2 h-full flex flex-col justify-center pl-12 lg:pl-20 pb-20"> 
+        <div class="w-1/2 h-full flex flex-col justify-center pl-12 lg:pl-20 pb-28"> <!-- pb-28로 늘려 쿠키배너 공간 확보 -->
             <div class="max-w-[600px] w-full">
                 <div class="mb-12">
                     <h1 class="text-[64px] font-extrabold mb-12 tracking-wide leading-tight break-keep">지금 일어나고 있는 일</h1>
@@ -141,7 +139,6 @@
                         <i class="fa-brands fa-apple text-[20px]"></i> <span class="text-sm">Apple에서 가입하기</span>
                     </button>
 
-                    <!-- 구분선 -->
                     <div class="flex items-center my-1 w-full gap-2">
                         <div class="h-px bg-[#cfd9de] dark:bg-[#2f3336] flex-1"></div>
                         <span class="text-[15px] pb-1 shrink-0">또는</span>
@@ -163,9 +160,9 @@
             </div>
         </div>
 
-        <!-- PC 푸터 (하단 고정) -->
-        <div class="absolute bottom-0 w-full py-3 px-4 z-10 bg-white dark:bg-black">
-            <div class="footer-container">
+        <!-- PC 푸터 (화면 중앙 하단, 쿠키 배너 때문에 살짝 위로) -->
+        <div class="absolute bottom-[80px] w-full py-3 px-4 z-10 bg-transparent pointer-events-none">
+            <div class="footer-container pointer-events-auto">
                 <span class="footer-item footer-link">소개</span>
                 <span class="footer-item footer-link">X 앱 다운로드하기</span>
                 <span class="footer-item footer-link">고객센터</span>
@@ -190,13 +187,11 @@
     </div>
 
     <!-- ========================================= -->
-    <!-- 모바일/태블릿 레이아웃 (lg 미만: ~1023px) -->
-    <!-- 아이패드 세로 및 스마트폰용 (스크롤 허용)  -->
+    <!-- 모바일 레이아웃 (md 미만) -->
     <!-- ========================================= -->
-    <div id="mobile-view" class="flex lg:hidden flex-col min-h-screen w-full">
-        <!-- min-h-screen으로 전체 높이 확보, 내부 스크롤 대신 전체 스크롤 -->
-        
-        <div class="flex-grow px-8 py-12 flex flex-col items-center">
+    <div id="mobile-view" class="flex md:hidden flex-col h-dvh w-full overflow-y-auto no-scrollbar">
+        <!-- pb-40: 하단 쿠키 배너와 푸터가 겹치지 않도록 충분한 여백 확보 -->
+        <div class="flex-grow px-8 py-10 flex flex-col items-center pb-48">
             
             <div class="w-full mb-10 flex justify-start">
                  <svg viewBox="0 0 24 24" aria-hidden="true" class="w-10 h-10 fill-black dark:fill-[#e7e9ea]">
@@ -218,7 +213,6 @@
                     <i class="fa-brands fa-apple text-[20px]"></i> <span class="text-sm">Apple에서 가입하기</span>
                 </button>
 
-                <!-- 구분선 -->
                 <div class="flex items-center my-1 w-full gap-2">
                     <div class="h-px bg-[#cfd9de] dark:bg-[#2f3336] flex-1"></div>
                     <span class="text-[15px] pb-1 shrink-0">또는</span>
@@ -237,30 +231,48 @@
                     <a href="https://grok.com/" target="_blank" class="grok-btn group"><span class="mr-2 font-bold">/</span> <span>Grok 살펴보기</span></a>
                 </div>
             </div>
-        </div>
 
-        <!-- 모바일 푸터 (자연스러운 배치) -->
-        <div class="w-full py-4 px-6 pb-8 bg-transparent shrink-0">
-            <div class="footer-container">
-                <span class="footer-item footer-link">소개</span>
-                <span class="footer-item footer-link">X 앱 다운로드하기</span>
-                <span class="footer-item footer-link">고객센터</span>
-                <span class="footer-item footer-link">이용약관</span>
-                <span class="footer-item footer-link">개인정보 처리방침</span>
-                <span class="footer-item footer-link">쿠키 정책</span>
-                <span class="footer-item footer-link">접근성</span>
-                <span class="footer-item footer-link">광고 정보</span>
-                <span class="footer-item footer-link">블로그</span>
-                <span class="footer-item footer-link">상태</span>
-                <span class="footer-item footer-link">채용</span>
-                <span class="footer-item footer-link">브랜드 리소스</span>
-                <span class="footer-item footer-link">광고</span>
-                <span class="footer-item footer-link">마케팅</span>
-                <span class="footer-item footer-link">X 비즈니스</span>
-                <span class="footer-item footer-link">개발자</span>
-                <span class="footer-item footer-link">디렉터리</span>
-                <span class="footer-item footer-link">설정</span>
-                <span class="footer-item" style="padding-right:0;">© 2025 X Corp.</span>
+            <!-- 모바일 푸터 -->
+            <div class="w-full pt-8 bg-transparent">
+                <div class="footer-container">
+                    <span class="footer-item footer-link">소개</span>
+                    <span class="footer-item footer-link">X 앱 다운로드하기</span>
+                    <span class="footer-item footer-link">고객센터</span>
+                    <span class="footer-item footer-link">이용약관</span>
+                    <span class="footer-item footer-link">개인정보 처리방침</span>
+                    <span class="footer-item footer-link">쿠키 정책</span>
+                    <span class="footer-item footer-link">접근성</span>
+                    <span class="footer-item footer-link">광고 정보</span>
+                    <span class="footer-item footer-link">블로그</span>
+                    <span class="footer-item footer-link">상태</span>
+                    <span class="footer-item footer-link">채용</span>
+                    <span class="footer-item footer-link">브랜드 리소스</span>
+                    <span class="footer-item footer-link">광고</span>
+                    <span class="footer-item footer-link">마케팅</span>
+                    <span class="footer-item footer-link">X 비즈니스</span>
+                    <span class="footer-item footer-link">개발자</span>
+                    <span class="footer-item footer-link">디렉터리</span>
+                    <span class="footer-item footer-link">설정</span>
+                    <span class="footer-item" style="padding-right:0;">© 2025 X Corp.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 쿠키 알림 배너 (하단 고정) -->
+    <div id="cookie-banner" class="fixed bottom-0 left-0 w-full bg-white dark:bg-black border-t border-[#cfd9de] dark:border-[#2f3336] z-40 p-4 shadow-[0_-4px_10px_rgba(0,0,0,0.1)] cookie-banner transition-transform duration-300">
+        <div class="max-w-[1200px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+            <div class="text-[15px] text-[#0f1419] dark:text-[#e7e9ea] leading-snug">
+                X와 파트너는 귀하에게 더 나은, 더 안전하고 빠른 서비스를 제공하고 비즈니스를 지원하기 위해 쿠키를 사용합니다. 일부 쿠키는 서비스 이용, 개선 및 적절한 작동을 위해 필요합니다. 
+                <a href="#" class="text-[#1d9bf0] hover:underline">자세히 알아보기</a>
+            </div>
+            <div class="flex gap-3 shrink-0 w-full md:w-auto">
+                <button onclick="hideCookieBanner()" class="flex-1 md:flex-none h-10 px-6 rounded-full font-bold border border-[#cfd9de] dark:border-[#536471] hover:bg-[#eff3f4] dark:hover:bg-[rgba(239,243,244,0.1)] transition text-[15px]">
+                    거부
+                </button>
+                <button onclick="hideCookieBanner()" class="flex-1 md:flex-none h-10 px-6 rounded-full font-bold bg-[#1d9bf0] hover:bg-[#1a8cd8] text-white transition text-[15px]">
+                    모두 수락
+                </button>
             </div>
         </div>
     </div>
@@ -328,6 +340,14 @@
             setTimeout(() => { loader.classList.add('fade-out'); }, 800);
             setTimeout(() => { loader.style.display = 'none'; }, 1300);
         });
+
+        // 쿠키 배너 닫기 함수
+        function hideCookieBanner() {
+            const banner = document.getElementById('cookie-banner');
+            banner.style.transform = 'translateY(100%)';
+            // 배너가 사라지면 PC 푸터 위치를 바닥으로 내림 (선택 사항)
+            // 여기서는 심플하게 숨김 처리만 함
+        }
 
         const modal = document.getElementById('login-modal');
         const closeModal = document.getElementById('close-modal');
