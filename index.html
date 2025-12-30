@@ -15,15 +15,15 @@
             font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             margin: 0; padding: 0;
             height: 100vh; height: 100dvh; 
-            overflow: hidden; 
+            overflow: hidden; /* 전체 스크롤 방지, 내부 스크롤 사용 */
         }
 
-        /* 1024px(lg) 미만에서는 전체 스크롤 허용 (세로 모드 대응) */
+        /* 1024px 미만(태블릿 세로/모바일)에서는 전체 스크롤 허용 */
         @media (max-width: 1023px) {
             body { overflow-y: auto; }
         }
 
-        /* 테마별 변수 설정 */
+        /* 입력 필드 테마 */
         .x-input-group {
             position: relative;
             border: 1px solid #cfd9de;
@@ -115,94 +115,90 @@
 
     <!-- ===================================================================================== -->
     <!-- [PC & 아이패드 가로 뷰] 화면 너비 1024px(lg) 이상일 때 활성화 -->
-    <!-- 기준을 xl(1280px) -> lg(1024px)로 낮춰서 아이패드 가로 모드에서도 이 화면이 뜹니다. -->
     <!-- ===================================================================================== -->
     <div id="desktop-view" class="hidden lg:flex h-screen w-full relative">
         
         <!-- 왼쪽: 로고 -->
         <div class="w-1/2 h-full flex justify-center items-center relative">
-            <!-- 반응형 로고 사이즈: lg에서는 300px, xl에서는 380px -->
             <svg viewBox="0 0 24 24" aria-hidden="true" class="w-[300px] xl:w-[380px] fill-black dark:fill-[#e7e9ea]">
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
             </svg>
         </div>
 
-        <!-- 오른쪽: 콘텐츠 -->
-        <!-- pl-8 (lg) -> pl-20 (xl): 화면이 좁을 땐 패딩을 줄여서 글자가 겹치지 않게 함 -->
-        <div class="w-1/2 h-full flex flex-col justify-center pl-8 xl:pl-20 pb-20"> 
-            <div class="max-w-[600px] w-full">
-                <div class="mb-12">
-                    <!-- 폰트 크기 반응형 조절 -->
-                    <h1 class="text-[50px] xl:text-[64px] font-extrabold mb-12 tracking-wide leading-tight break-keep">지금 일어나고 있는 일</h1>
-                    <h2 class="text-[31px] font-bold mb-8">지금 가입하세요.</h2>
-                </div>
-
-                <div class="w-[300px] flex flex-col gap-3">
-                    <!-- Google -->
-                    <button class="bg-white text-[#0f1419] border border-[#cfd9de] dark:border-transparent hover:bg-[#f7f9f9] dark:hover:bg-[#e6e6e6] transition rounded-full h-10 px-4 flex items-center justify-center gap-2 font-medium text-[15px]">
-                        <i class="fa-brands fa-google text-[18px]"></i> <span class="text-sm">Google 계정으로 가입</span>
-                    </button>
-                    <!-- Apple -->
-                    <button class="bg-white text-[#0f1419] border border-[#cfd9de] dark:border-transparent hover:bg-[#f7f9f9] dark:hover:bg-[#e6e6e6] transition rounded-full h-10 px-4 flex items-center justify-center gap-2 font-bold text-[15px]">
-                        <i class="fa-brands fa-apple text-[20px]"></i> <span class="text-sm">Apple에서 가입하기</span>
-                    </button>
-
-                    <!-- Divider -->
-                    <div class="flex items-center my-1 w-full gap-2">
-                        <div class="h-px bg-[#cfd9de] dark:bg-[#2f3336] flex-1"></div>
-                        <span class="text-[15px] pb-1 shrink-0">또는</span>
-                        <div class="h-px bg-[#cfd9de] dark:bg-[#2f3336] flex-1"></div>
+        <!-- 오른쪽: 콘텐츠 (Flex Column으로 전체 높이 사용) -->
+        <!-- overflow-y-auto: 내용이 길어지면 오른쪽 영역만 스크롤됨 -->
+        <div class="w-1/2 h-full flex flex-col bg-white dark:bg-black overflow-y-auto no-scrollbar relative">
+            
+            <!-- 상단 로그인 폼 (남은 공간 차지, 중앙 정렬) -->
+            <div class="flex-grow flex flex-col justify-center pl-8 xl:pl-20 py-12"> 
+                <div class="max-w-[600px] w-full">
+                    <div class="mb-12">
+                        <h1 class="text-[50px] xl:text-[64px] font-extrabold mb-12 tracking-wide leading-tight break-keep">지금 일어나고 있는 일</h1>
+                        <h2 class="text-[31px] font-bold mb-8">지금 가입하세요.</h2>
                     </div>
 
-                    <!-- Signup -->
-                    <a href="https://x.com/i/flow/signup" target="_blank" class="bg-[#1d9bf0] hover:bg-[#1a8cd8] text-white transition rounded-full h-10 px-4 font-bold text-[15px] flex items-center justify-center decoration-0">계정 만들기</a>
+                    <div class="w-[300px] flex flex-col gap-3">
+                        <button class="bg-white text-[#0f1419] border border-[#cfd9de] dark:border-transparent hover:bg-[#f7f9f9] dark:hover:bg-[#e6e6e6] transition rounded-full h-10 px-4 flex items-center justify-center gap-2 font-medium text-[15px]">
+                            <i class="fa-brands fa-google text-[18px]"></i> <span class="text-sm">Google 계정으로 가입</span>
+                        </button>
+                        <button class="bg-white text-[#0f1419] border border-[#cfd9de] dark:border-transparent hover:bg-[#f7f9f9] dark:hover:bg-[#e6e6e6] transition rounded-full h-10 px-4 flex items-center justify-center gap-2 font-bold text-[15px]">
+                            <i class="fa-brands fa-apple text-[20px]"></i> <span class="text-sm">Apple에서 가입하기</span>
+                        </button>
 
-                    <p class="text-[11px] text-[#536471] dark:text-[#71767b] mt-1 leading-normal">
-                        가입하시거나 로그인하면 <span class="text-[#1d9bf0] cursor-pointer hover:underline">쿠키 사용</span>을 포함해 <span class="text-[#1d9bf0] cursor-pointer hover:underline">이용약관</span> 및 <span class="text-[#1d9bf0] cursor-pointer hover:underline">개인정보 처리방침</span>에 동의하게 됩니다.
-                    </p>
+                        <div class="flex items-center my-1 w-full gap-2">
+                            <div class="h-px bg-[#cfd9de] dark:bg-[#2f3336] flex-1"></div>
+                            <span class="text-[15px] pb-1 shrink-0">또는</span>
+                            <div class="h-px bg-[#cfd9de] dark:bg-[#2f3336] flex-1"></div>
+                        </div>
 
-                    <!-- Login -->
-                    <div class="mt-12">
-                        <p class="font-bold text-[17px] mb-4">이미 계정이 있으신가요?</p>
-                        <button class="signin-trigger-btn w-full border border-[#cfd9de] dark:border-[#536471] text-[#1d9bf0] hover:bg-[#e8f5fd] dark:hover:bg-[rgba(29,155,240,0.1)] transition rounded-full h-10 font-bold text-[15px]">로그인</button>
-                        <a href="https://grok.com/" target="_blank" class="grok-btn group"><span class="mr-2 font-bold">/</span> <span>Grok 살펴보기</span></a>
+                        <a href="https://x.com/i/flow/signup" target="_blank" class="bg-[#1d9bf0] hover:bg-[#1a8cd8] text-white transition rounded-full h-10 px-4 font-bold text-[15px] flex items-center justify-center decoration-0">계정 만들기</a>
+
+                        <p class="text-[11px] text-[#536471] dark:text-[#71767b] mt-1 leading-normal">
+                            가입하시거나 로그인하면 <span class="text-[#1d9bf0] cursor-pointer hover:underline">쿠키 사용</span>을 포함해 <span class="text-[#1d9bf0] cursor-pointer hover:underline">이용약관</span> 및 <span class="text-[#1d9bf0] cursor-pointer hover:underline">개인정보 처리방침</span>에 동의하게 됩니다.
+                        </p>
+
+                        <div class="mt-12">
+                            <p class="font-bold text-[17px] mb-4">이미 계정이 있으신가요?</p>
+                            <button class="signin-trigger-btn w-full border border-[#cfd9de] dark:border-[#536471] text-[#1d9bf0] hover:bg-[#e8f5fd] dark:hover:bg-[rgba(29,155,240,0.1)] transition rounded-full h-10 font-bold text-[15px]">로그인</button>
+                            <a href="https://grok.com/" target="_blank" class="grok-btn group"><span class="mr-2 font-bold">/</span> <span>Grok 살펴보기</span></a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- PC/아이패드 가로 푸터 -->
-        <div class="absolute bottom-[80px] w-full py-3 px-4 z-10 bg-transparent pointer-events-none">
-            <div class="footer-container pointer-events-auto">
-                <span class="footer-item footer-link">소개</span>
-                <span class="footer-item footer-link">X 앱 다운로드하기</span>
-                <span class="footer-item footer-link">고객센터</span>
-                <span class="footer-item footer-link">이용약관</span>
-                <span class="footer-item footer-link">개인정보 처리방침</span>
-                <span class="footer-item footer-link">쿠키 정책</span>
-                <span class="footer-item footer-link">접근성</span>
-                <span class="footer-item footer-link">광고 정보</span>
-                <span class="footer-item footer-link">블로그</span>
-                <span class="footer-item footer-link">상태</span>
-                <span class="footer-item footer-link">채용</span>
-                <span class="footer-item footer-link">브랜드 리소스</span>
-                <span class="footer-item footer-link">광고</span>
-                <span class="footer-item footer-link">마케팅</span>
-                <span class="footer-item footer-link">X 비즈니스</span>
-                <span class="footer-item footer-link">개발자</span>
-                <span class="footer-item footer-link">디렉터리</span>
-                <span class="footer-item footer-link">설정</span>
-                <span class="footer-item" style="padding-right:0;">© 2025 X Corp.</span>
+            <!-- PC 푸터 (스크롤 맨 끝에 자연스럽게 배치 - 겹침 해결) -->
+            <!-- fixed나 absolute가 아닌 일반 흐름(flow)에 배치하여 겹치지 않게 함 -->
+            <div class="w-full py-4 px-4 bg-transparent shrink-0 pb-24"> <!-- pb-24: 쿠키 배너 공간 확보 -->
+                <div class="footer-container justify-center xl:justify-start xl:pl-20"> <!-- 왼쪽 정렬에 맞춤 -->
+                    <span class="footer-item footer-link">소개</span>
+                    <span class="footer-item footer-link">X 앱 다운로드하기</span>
+                    <span class="footer-item footer-link">고객센터</span>
+                    <span class="footer-item footer-link">이용약관</span>
+                    <span class="footer-item footer-link">개인정보 처리방침</span>
+                    <span class="footer-item footer-link">쿠키 정책</span>
+                    <span class="footer-item footer-link">접근성</span>
+                    <span class="footer-item footer-link">광고 정보</span>
+                    <span class="footer-item footer-link">블로그</span>
+                    <span class="footer-item footer-link">상태</span>
+                    <span class="footer-item footer-link">채용</span>
+                    <span class="footer-item footer-link">브랜드 리소스</span>
+                    <span class="footer-item footer-link">광고</span>
+                    <span class="footer-item footer-link">마케팅</span>
+                    <span class="footer-item footer-link">X 비즈니스</span>
+                    <span class="footer-item footer-link">개발자</span>
+                    <span class="footer-item footer-link">디렉터리</span>
+                    <span class="footer-item footer-link">설정</span>
+                    <span class="footer-item" style="padding-right:0;">© 2025 X Corp.</span>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- ===================================================================================== -->
-    <!-- [모바일/세로 뷰] 화면 너비 1024px(lg) 미만일 때 활성화 -->
-    <!-- 스마트폰 및 아이패드 세로 모드에서는 이 화면이 뜹니다. -->
+    <!-- [모바일/세로 뷰] 화면 너비 1024px 미만일 때 활성화 -->
     <!-- ===================================================================================== -->
     <div id="mobile-tablet-view" class="flex lg:hidden flex-col min-h-screen w-full">
-        <div class="flex-grow px-8 py-10 flex flex-col items-center justify-center pb-48 min-h-[600px]">
+        <div class="flex-grow px-8 py-10 flex flex-col items-center justify-center min-h-[600px]">
             
             <div class="w-full max-w-[600px] mb-10 flex justify-start">
                  <svg viewBox="0 0 24 24" aria-hidden="true" class="w-10 h-10 fill-black dark:fill-[#e7e9ea]">
@@ -219,12 +215,10 @@
                 <button class="bg-white text-[#0f1419] border border-[#cfd9de] dark:border-transparent hover:bg-[#f7f9f9] dark:hover:bg-[#e6e6e6] transition rounded-full h-10 px-4 flex items-center justify-center gap-2 font-medium text-[15px]">
                     <i class="fa-brands fa-google text-[18px]"></i> <span class="text-sm">Google 계정으로 가입</span>
                 </button>
-                
                 <button class="bg-white text-[#0f1419] border border-[#cfd9de] dark:border-transparent hover:bg-[#f7f9f9] dark:hover:bg-[#e6e6e6] transition rounded-full h-10 px-4 flex items-center justify-center gap-2 font-bold text-[15px]">
                     <i class="fa-brands fa-apple text-[20px]"></i> <span class="text-sm">Apple에서 가입하기</span>
                 </button>
 
-                <!-- Divider -->
                 <div class="flex items-center my-1 w-full gap-2">
                     <div class="h-px bg-[#cfd9de] dark:bg-[#2f3336] flex-1"></div>
                     <span class="text-[15px] pb-1 shrink-0">또는</span>
@@ -246,7 +240,7 @@
         </div>
 
         <!-- 모바일/세로 푸터 -->
-        <div class="w-full pt-8 bg-transparent shrink-0">
+        <div class="w-full pt-8 bg-transparent shrink-0 pb-32"> <!-- pb-32: 하단 쿠키배너 공간 넉넉히 확보 -->
             <div class="footer-container">
                 <span class="footer-item footer-link">소개</span>
                 <span class="footer-item footer-link">X 앱 다운로드하기</span>
