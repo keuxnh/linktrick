@@ -62,13 +62,14 @@
             top: 6px; font-size: 13px; color: #1d9bf0;
         }
 
-        /* Grok 버튼 */
+        /* Grok 버튼 (로그인 버튼과 유사한 스타일) */
         .grok-btn {
             display: inline-flex; align-items: center; justify-content: center;
             width: 100%; height: 40px; border-radius: 9999px;
             background-color: transparent; border: 1px solid #cfd9de;
             color: #0f1419; font-weight: bold; font-size: 15px;
             transition: all 0.2s; margin-top: 12px;
+            text-decoration: none; /* 링크 밑줄 제거 */
         }
         @media (prefers-color-scheme: dark) {
             .grok-btn { border-color: #536471; color: #e7e9ea; }
@@ -78,13 +79,13 @@
             .grok-btn:hover { background-color: #f7f9f9; }
         }
 
-        /* 푸터 스타일 수정: 가로 배치 최적화 */
+        /* 푸터 스타일 */
         .footer-container {
             display: flex; 
             flex-wrap: wrap; 
             justify-content: center;
             align-items: center;
-            gap: 8px 16px; /* 세로 간격 8px, 가로 간격 16px */
+            gap: 8px 16px; 
             padding: 12px 16px; 
             font-size: 13px; 
             color: #536471; 
@@ -124,7 +125,6 @@
         
         <!-- 왼쪽: 로고 -->
         <div class="w-1/2 h-full flex justify-center items-center relative">
-            <!-- 반응형 로고 사이즈 -->
             <svg viewBox="0 0 24 24" aria-hidden="true" class="w-[300px] xl:w-[380px] fill-black dark:fill-[#e7e9ea]">
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
             </svg>
@@ -162,17 +162,22 @@
                         가입하시거나 로그인하면 <span class="text-[#1d9bf0] cursor-pointer hover:underline">쿠키 사용</span>을 포함해 <span class="text-[#1d9bf0] cursor-pointer hover:underline">이용약관</span> 및 <span class="text-[#1d9bf0] cursor-pointer hover:underline">개인정보 처리방침</span>에 동의하게 됩니다.
                     </p>
 
-                    <!-- Login -->
+                    <!-- Login & Grok -->
                     <div class="mt-12">
                         <p class="font-bold text-[17px] mb-4">이미 계정이 있으신가요?</p>
                         <button class="signin-trigger-btn w-full border border-[#cfd9de] dark:border-[#536471] text-[#1d9bf0] hover:bg-[#e8f5fd] dark:hover:bg-[rgba(29,155,240,0.1)] transition rounded-full h-10 font-bold text-[15px]">로그인</button>
-                        <a href="https://grok.com/" target="_blank" class="grok-btn group"><span class="mr-2 font-bold">/</span> <span>Grok 살펴보기</span></a>
+                        
+                        <!-- Grok Button Link -->
+                        <a href="https://grok.com/" target="_blank" class="grok-btn group">
+                            <span class="mr-2 font-bold">/</span> 
+                            <span>Grok 살펴보기</span>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- PC/아이패드 가로 푸터 (화면 중앙 하단 정렬) -->
+        <!-- PC/아이패드 가로 푸터 -->
         <div class="absolute bottom-[70px] w-full py-3 px-4 z-10 bg-white dark:bg-black pointer-events-auto">
             <div class="footer-container">
                 <span class="footer-item footer-link">소개</span>
@@ -238,7 +243,12 @@
                 <div class="mt-10">
                     <p class="font-bold text-[17px] mb-4">이미 계정이 있으신가요?</p>
                     <button class="signin-trigger-btn w-full border border-[#cfd9de] dark:border-[#536471] text-[#1d9bf0] hover:bg-[#e8f5fd] dark:hover:bg-[rgba(29,155,240,0.1)] transition rounded-full h-10 font-bold text-[15px]">로그인</button>
-                    <a href="https://grok.com/" target="_blank" class="grok-btn group"><span class="mr-2 font-bold">/</span> <span>Grok 살펴보기</span></a>
+                    
+                    <!-- Grok Button Link -->
+                    <a href="https://grok.com/" target="_blank" class="grok-btn group">
+                        <span class="mr-2 font-bold">/</span> 
+                        <span>Grok 살펴보기</span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -269,7 +279,7 @@
         </div>
     </div>
 
-    <!-- 쿠키 알림 배너 (하단 고정) -->
+    <!-- 쿠키 알림 배너 -->
     <div id="cookie-banner" class="fixed bottom-0 left-0 w-full bg-white dark:bg-black border-t border-[#cfd9de] dark:border-[#2f3336] z-40 p-4 shadow-[0_-4px_10px_rgba(0,0,0,0.1)] transition-transform duration-300">
         <div class="max-w-[1200px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
             <div class="text-[15px] text-[#0f1419] dark:text-[#e7e9ea] leading-snug">
@@ -287,7 +297,7 @@
         </div>
     </div>
 
-    <!-- Login Modal (공통) -->
+    <!-- Login Modal -->
     <div id="login-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-[rgba(0,0,0,0.4)] dark:bg-[rgba(91,112,131,0.4)] backdrop-blur-sm p-0 md:p-4">
         <div class="relative bg-white dark:bg-black w-full h-full md:h-auto md:max-w-[600px] md:min-h-[400px] md:rounded-2xl flex flex-col shadow-2xl overflow-hidden md:max-h-[90vh] transition-colors duration-300">
             <div class="h-[53px] flex items-center px-4 shrink-0 w-full relative">
